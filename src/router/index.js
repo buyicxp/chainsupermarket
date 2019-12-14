@@ -27,7 +27,17 @@ const routes = [{
 		path: '/login',
 		name: 'login',
 		component: () => import( /* webpackChunkName: "about" */ '../views/log/login.vue')
-	}
+	},
+	{
+		path: '/GroupActivities',
+		name: 'GroupActivities',
+		component: () => import( /* webpackChunkName: "about" */ '../views/GroupActivities.vue')
+	},
+	{
+		path: '/fu',
+		name:'fu',
+		component: () => import( /* webpackChunkName: "about" */  '../views/FullActivity.vue')
+	},
 ]
 
 const router = new VueRouter({

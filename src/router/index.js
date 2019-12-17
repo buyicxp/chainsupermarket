@@ -31,12 +31,12 @@ const routes = [{
 	{
 		path: '/GroupActivities',
 		name: 'GroupActivities',
-		component: () => import( /* webpackChunkName: "about" */ '../views/GroupActivities.vue')
+		component: () => import( /* webpackChunkName: "about" */ '../views/marketing/GroupActivities.vue')
 	},
 	{
 		path: '/fu',
 		name:'fu',
-		component: () => import( /* webpackChunkName: "about" */  '../views/FullActivity.vue')
+		component: () => import( /* webpackChunkName: "about" */  '../views/marketing/FullActivity.vue')
 	},
 ]
 

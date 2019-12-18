@@ -17,11 +17,27 @@ const routes = [{
 			title: '权限测试',
 			permission: true //开启权限验证
 		},
-		children: [/* {
-			path: "/BooksList",
-			name: "BooksList",
-			component: () => import('@/components/BooksList.vue')
-		} */]
+		children: [ {
+			path: "/goodstype",
+			name: "goodstype",
+			component: () => import('../views/commodity/goodstype.vue')
+		},
+		{
+			path: "/Commodity",
+			name: "Commodity",
+			component: () => import('../views/commodity/Commodity.vue')
+		},
+		{
+			path: "/orderform",
+			name: "orderform",
+			component: () => import('../views/orderform/OrderForm.vue')
+		},
+			{
+				path: '/addGoods',
+				name: 'addGoods',
+				component: () => import('../views/commodity/addGoods.vue')
+			}
+		]
 	},
 	{
 		path: '/login',

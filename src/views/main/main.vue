@@ -29,96 +29,63 @@
                         <el-submenu index="2">
                             <template slot="title"><i class="el-icon-menu">商品</i></template>
                             <el-menu-item-group>
-                                <el-menu-item index="2-1"><el-link href="/goodstype">商品分类</el-link></el-menu-item>
-                                <el-menu-item index="2-2"><el-link href="/Commodity">商品列表</el-link></el-menu-item>
+                                <el-menu-item index="2-1"><el-link @click="$router.replace('/goodstype')">商品分类</el-link></el-menu-item>
+                                <el-menu-item index="2-2"><el-link @click="$router.replace('/Commodity')">商品列表</el-link></el-menu-item>
                              </el-menu-item-group>
                         </el-submenu>
 
                         <el-submenu index="3">
                             <template slot="title"><i class="el-icon-menu">订单</i></template>
                             <el-menu-item-group>
-                                <el-menu-item index="3-1"><el-link href="/OrderForm">商品订单</el-link></el-menu-item>
+                                <el-menu-item index="3-1"><el-link @click="$router.replace('/OrderForm')">商品订单</el-link></el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
                         <el-submenu index="4">
-                            <template slot="title"><i class="el-icon-menu">会员</i></template>
+                            <template slot="title"><i class="el-icon-menu">物流</i></template>
                             <el-menu-item-group>
-                                <template slot="title">分组一</template>
-                                <el-menu-item index="2-1">选项1</el-menu-item>
-                                <el-menu-item index="2-2">选项2</el-menu-item>
+                                <el-menu-item index="3-1"><el-link href="">物流详情</el-link></el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="2-3">选项3</el-menu-item>
-                            </el-menu-item-group>
-                            <el-submenu index="2-4">
-                                <template slot="title">选项4</template>
-                                <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-                            </el-submenu>
                         </el-submenu>
 
                         <el-submenu index="5">
-                            <template slot="title"><i class="el-icon-menu">营销</i></template>
+                            <template slot="title"><i class="el-icon-menu">会员</i></template>
                             <el-menu-item-group>
-                                <template slot="title">分组一</template>
-                                <el-menu-item index="2-1">选项1</el-menu-item>
-                                <el-menu-item index="2-2">选项2</el-menu-item>
+                                <el-menu-item index="2-1">一</el-menu-item>
+                                <el-menu-item index="2-2">二</el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="2-3">选项3</el-menu-item>
-                            </el-menu-item-group>
-                            <el-submenu index="2-4">
-                                <template slot="title">选项4</template>
-                                <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-                            </el-submenu>
                         </el-submenu>
 
                         <el-submenu index="6">
-                            <template slot="title"><i class="el-icon-menu">文章</i></template>
+                            <template slot="title"><i class="el-icon-menu">营销</i></template>
                             <el-menu-item-group>
-                                <template slot="title">分组一</template>
-                                <el-menu-item index="2-1">选项1</el-menu-item>
-                                <el-menu-item index="2-2">选项2</el-menu-item>
+                                <el-menu-item index="2-1">一</el-menu-item>
+                                <el-menu-item index="2-2">二</el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="2-3">选项3</el-menu-item>
-                            </el-menu-item-group>
-                            <el-submenu index="2-4">
-                                <template slot="title">选项4</template>
-                                <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-                            </el-submenu>
                         </el-submenu>
 
                         <el-submenu index="7">
-                            <template slot="title"><i class="el-icon-menu">广告</i></template>
+                            <template slot="title"><i class="el-icon-menu">文章</i></template>
                             <el-menu-item-group>
-                                <template slot="title">分组一</template>
-                                <el-menu-item index="2-1">选项1</el-menu-item>
-                                <el-menu-item index="2-2">选项2</el-menu-item>
+                                <el-menu-item index="2-1">一</el-menu-item>
+                                <el-menu-item index="2-2">二</el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="2-3">选项3</el-menu-item>
-                            </el-menu-item-group>
-                            <el-submenu index="2-4">
-                                <template slot="title">选项4</template>
-                                <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-                            </el-submenu>
                         </el-submenu>
 
                         <el-submenu index="8">
+                            <template slot="title"><i class="el-icon-menu">广告</i></template>
+                            <el-menu-item-group>
+                                <el-menu-item index="2-1">一</el-menu-item>
+                                <el-menu-item index="2-2">二</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
+
+                        <el-submenu index="9">
                             <template slot="title"><i class="el-icon-menu">系统</i></template>
                             <el-menu-item-group>
-                                <template slot="title">分组一</template>
-                                <el-menu-item index="2-1">选项1</el-menu-item>
-                                <el-menu-item index="2-2">选项2</el-menu-item>
+                                <el-menu-item index="2-1">一</el-menu-item>
+                                <el-menu-item index="2-2">二</el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="分组2">
-                                <el-menu-item index="2-3">选项3</el-menu-item>
-                            </el-menu-item-group>
-                            <el-submenu index="2-4">
-                                <template slot="title">选项4</template>
-                                <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-                            </el-submenu>
                         </el-submenu>
 
                         <!-- <el-menu-item index="/BooksList" @click="goTo('/BooksList')">

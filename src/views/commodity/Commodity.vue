@@ -3,9 +3,9 @@
 
         <el-main>
             <div class="div_btn">
-            <el-button type="info" size="small">添加</el-button>
-                <el-button type="info" size="small" @click="add">Excl批量增加</el-button>
-                <el-button type="info" size="small" @click="removerow">删除</el-button>
+            <el-button type="danger" size="small" @click="$router.replace('/addGoods')">添加产品</el-button>
+<!--                <el-button type="info" size="small" @click="add">Excl批量增加</el-button>-->
+                <el-button type="info" size="small" @click="removerow">批量删除</el-button>
                 <div class="div_form" style="display: inline-block">
                 <el-form :inline="true" :model="commodity" class="demo-form-inline">
                     <el-form-item>
@@ -31,29 +31,29 @@
                       @selection-change="selectionchange">
                 <el-table-column type="selection" width="55" fixed>
                 </el-table-column>
-                <el-table-column prop="id" label="产品ID" width="80" fixed>
+                <el-table-column prop="id" label="产品ID" width="150" fixed>
                 </el-table-column>
-                <el-table-column prop="picturepath" label="图标">
+                <el-table-column prop="picturepath" label="图标" width="150">
                       <template slot-scope="scope">
                         <img :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
                       </template>
                 </el-table-column>
-                <el-table-column prop="goodsName" label="标题" width="120">
+                <el-table-column prop="goodsName" label="标题" width="150">
                 </el-table-column>
-                <el-table-column prop="typeName" label="所属分类" width="120">
+                <el-table-column prop="typeName" label="所属分类" width="150">
                 </el-table-column>
-                <el-table-column prop="goodsCode" label="商品码" width="120">
+                <el-table-column prop="goodsCode" label="商品码" width="150">
                 </el-table-column>
-                <el-table-column prop="createdate" label="创建时间" width="150">
+                <el-table-column prop="createdate" label="创建时间" width="160">
                     <template slot-scope="scope">
                         <p>{{scope.row.createdate | formatDate  }}</p>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="240" fixed="right">
+                <el-table-column label="操作" width="230" fixed="right">
                     <template scope="scope">
-                        <el-button ref="releaseStatus" type="info" size="mini" @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}</el-button>
-                        <el-button type="info" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-                        <el-button type="info" size="mini" @click="delCommodity(scope.$index, scope.row)">删除</el-button>
+                        <el-button ref="releaseStatus" type="warning" size="mini" @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}</el-button>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
+                        <el-button type="danger" size="mini" @click="delCommodity(scope.$index, scope.row)">删除</el-button>
                         <!-- scope.row代表当前对应行 -->
                     </template>
                 </el-table-column>

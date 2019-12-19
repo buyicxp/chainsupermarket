@@ -64,12 +64,12 @@
 
         <!-- 子增加弹窗  -->
         <el-dialog :title="dialogTitle" width="50%" :visible.sync="addziiconFormVisible">
-            <el-form :inline="true" :model="goodstype" class="demo-form-inline">
+            <el-form :inline="true" class="demo-form-inline">
                 <el-form-item label="分类名称">
-                    <el-input v-model="goodstype.typename"></el-input>
+                    <el-input v-model="name"></el-input>
                 </el-form-item>
                 <el-form-item label="商品数量">
-                    <el-input v-model="goodstype.typecount"></el-input>
+                    <el-input v-model="count"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -158,11 +158,16 @@
                 pageSize: 3,
                 currentPage: 1,
                 iconFormVisible: false,
-                goodstype: {},
+                goodstype: {
+                    typename:'',
+                },
+                //给值重新赋一个对象，如果用双向绑定会页面改变
+                name:'',
+                count:'',
                 dialogTitle: '增加',
                 rowIndex: null,
                 addiconFormVisible: false,
-                addziiconFormVisible: false
+                addziiconFormVisible: false,
             }
         },
         created() {
@@ -186,8 +191,9 @@
                     if (result.data.status === 200) {
                         this.list = result.data.message;
                         this.total = result.data["count"];
+                        //this.$message.success("加载成功");
                     } else {
-                        alert("获取数据失败");
+                        this.$message.error("获取数据失败");
                     }
                 })
             },
@@ -240,11 +246,18 @@
                 }
             },
             submitBrand() {
+                var that =this;
                 //var ctime = this.brand.ctime;
                 //var date = myFormateDate.dateFormat(new Date(ctime),'yyyy-MM-dd');
                 if (this.dialogTitle === '分类编辑') {
-                    ///this.feinull();
-                    this.iconFormVisible = false;
+                    // if (that.goodstype.typename == null || that.goodstype.typename == ''){
+                    //     that.$alert("名称不能为空，请您重新输入");
+                    //     return
+                    // }
+                    // if(that.goodstype.typecount == null){
+                    //     that.$alert("数量不能为空，请您重新输入");
+                    //     return
+                    // }
                     //this.list[this.rowIndex].name=this.goodstype.typename
                     //this.list[this.rowIndex].ctime=this.goodstype.typecount;
                     let s = {
@@ -257,14 +270,23 @@
                     this.$axios.post('/update', s).then(result => {
                         if (result.data > 0) {
                             this.$message.success('编辑成功');
+                            this.iconFormVisible = false;
                             this.goodstype = {};
                             this.showTable(this.currentPage, this.pageSize);
                         } else {
                             this.$message.warning('编辑失败');
                         }
-                    })
+            })
                 } else if (this.dialogTitle === '新增父类') {
-                    //this.$alert("!!!");
+                    console.log(that.goodstype.typename);
+                    if (that.goodstype.typename === null || that.goodstype.typename === ''){
+                        that.$alert('名称不能为空，请您重新输入');
+                        return
+                    }
+                    if(that.goodstype.typecount === null){
+                        that.$alert('数量不能为空，请您重新输入');
+                        return
+                    }
                     let as = {
                         "typename": this.goodstype.typename,
                         "typecount": parseInt(this.goodstype.typecount)
@@ -284,14 +306,18 @@
                         }
                     })
                 } else {
-                    if (this.goodstype.typename===''||this.goodstype.typename === null ||
-                        this.goodstype.typecount===''||this.goodstype.typecount === null){
-                        this.$alert("内容不能为空，请您重新输入");
-                        //return;
+                    //添加子分类
+                    if (that.name == null || that.name === ''){
+                        that.$alert("名称不能为空，请您重新输入");
+                        return
+                    }
+                    if(that.count == null){
+                        that.$alert("数量不能为空，请您重新输入");
+                        return
                     }
                     let as = {
-                        "typename": this.goodstype.typename,
-                        "typecount": parseInt(this.goodstype.typecount),
+                        "typename": this.name,
+                        "typecount": parseInt(this.count),
                         "parentId": parseInt(this.goodstype.parentId),
                         "id": parseInt(this.goodstype.id)
                     };
@@ -301,7 +327,7 @@
                         if (result.data > 0) {
                             this.$message.success('子类新增成功');
                             this.addziiconFormVisible = false;
-                            //this.goodstype = {};
+                            this.goodstype = {};
                             this.showTable(this.currentPage, this.pageSize);
                         } else {
                             this.$message.warning("子类新增失败");
@@ -383,9 +409,7 @@
             addzi(index,row) {
                 this.dialogTitle = '新增子类';
                 this.goodstype = row;
-                this.goodstype = {};
-                this.goodstype.typename = null;
-                this.goodstype.typecount = null;
+                //this.goodstype = {};
                 this.addziiconFormVisible = true;
             },
             handleEdit(index, row) {

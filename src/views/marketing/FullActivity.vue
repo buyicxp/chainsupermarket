@@ -1,23 +1,36 @@
 <template>
 	<div>
 		<el-main>
+			   <el-row>
+			   	<el-col :span="1" class="grid">
+			   		<el-button
+			   			type="success"
+			   			icon="el-icon-circle-plus-outline"
+			   			size="mini"
+			   			round
+						@click="addActivity()"
+			   		>
+			   			新建活动
+			   		</el-button>
+			   	</el-col>
+			   </el-row>
 			<!-- 根据活动名称查询数据（支持模糊查询） -->
 			<div class="serach"><el-input placeholder="请输入搜索的词" v-model="fullActivity.activityName" clearable style="width: 10.625rem;" @clear="getActivityList()"></el-input>
-			<el-button type="success" @click="getActivityList()" style="display: inline-block;">搜索</el-button>
+			<el-button type="success" @click="getActivityList()">搜索</el-button>
 			</div>
 			<!-- 满减满赠活动列表 -->
 			<el-table :data="fullActivityList">
-				<el-table-column prop="activityid" label="序号" width="140"></el-table-column>
+				<el-table-column prop="activityid" label="序号" width="70"></el-table-column>
 				<el-table-column prop="activityName" label="活动名称" width="120"></el-table-column>
-				<el-table-column prop="type.typeName" label="活动类型" width="120"></el-table-column>
-				<el-table-column prop="activityTime" label="活动时间" align="center" header-align="center" :formatter="formatDate"></el-table-column>
-				<el-table-column prop="range.activityRange" label="活动范围" width="120"></el-table-column>
-				<el-table-column prop="activityState" label="活动状态" width="120"></el-table-column>
-				<el-table-column prop="executingState" label="执行状态" width="120"></el-table-column>
+				<el-table-column prop="type.typeName" label="活动类型" width="80"></el-table-column>
+				<el-table-column prop="activityTime" label="活动时间"  width="100" ></el-table-column>
+				<el-table-column prop="range.activityRange" label="活动范围" width="100"></el-table-column>
+				<el-table-column prop="activityState" label="活动状态" width="90"></el-table-column>
+				<el-table-column prop="executingState" label="执行状态" width="100"></el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
-						<el-button size="mini" type="text" style="color: lightseagreen;display: inline-block;" @click="handleClose(scope.$index, scope.row)">详情</el-button>
-						<el-button size="mini" type="text" style="color: #F56C6C;display: inline-block;" @click="handleDelete(scope.$index, scope.row)">启用/停用</el-button>
+						<el-button size="mini" type="text" style="color: lightseagreen;" @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+						<el-button size="mini" type="text" style="color: #F56C6C;" @click="handleDelete(scope.$index, scope.row)">启用/停用</el-button>
 					</template>
 				</el-table-column>
 
@@ -47,14 +60,16 @@
 			<el-dialog
 			  title="活动详情"
 			  :visible.sync="dialogVisible"
-			  width="58%"
+			  width="80%"
 			  :before-close="handleClose">
-			 <el-table :data="fullActivityList">
+			 <el-table :data="fullActivityById">
 			 	<el-table-column prop="activityName" label="活动名称" width="120"></el-table-column>
 			 	<el-table-column prop="type.typeName" label="活动类型" width="120"></el-table-column>
-			 	<el-table-column prop="activityTime" label="活动时间"  width="140" :formatter="formatDate"></el-table-column>
+			 	<el-table-column prop="activityTime" label="活动时间"  width="120" ></el-table-column>
 			 	<el-table-column prop="range.activityRange" label="活动范围" width="120"></el-table-column>
 				<el-table-column prop="activityDetail" label="活动详情" width="300"></el-table-column>
+				<el-table-column prop="goodsType.typename" label="参与活动类别" width="120"></el-table-column>
+				<el-table-column prop="goodsCommodity.goodsName" label="参与活动商品" width="120"></el-table-column>
 			 </el-table>
 			</el-dialog>
 		</el-main>
@@ -73,6 +88,7 @@ export default {
 			size: 5,
 			page: 1,
 			fullActivityList: [],
+			fullActivityById:[],
 			fullActivity: {},
 			curId: '',
 		};
@@ -88,6 +104,7 @@ export default {
 	methods: {
 		handleClose(done) {
 			this.dialogVisible = true;
+			
 			done();
 		},
 		handleSizeChange(val) {
@@ -98,7 +115,12 @@ export default {
 			this.page = val;
 			this.getActivityList();
 		},
-		//获取活动数据
+		//跳转到新建活动页面
+		addActivity(){
+			this.$router.replace('/add');
+			
+		},
+		//获取活动数据(模糊查询)
 		async getActivityList() {
 			try {
 				let res = await axios.post(
@@ -164,8 +186,23 @@ export default {
 			}
 		},
 		//详情
-		handleEdit(index, row) {
-			console.log(index, row);
+	 async	handleDetail(index, row) {
+		  console.log(row)
+			try {
+				let res = await axios.post(
+					'http://localhost:8080/fullActivity/detail',
+					qs.stringify({
+						activityid: row.activityid,
+						
+					})
+				);
+				this.fullActivityById=[]
+				this.fullActivityById.push(res.data.full);
+				this.dialog2Visible = false;
+				this.dialogVisible = true;
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	},
 	mounted() {

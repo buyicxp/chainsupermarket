@@ -51,9 +51,9 @@
                 </el-table-column>
                 <el-table-column label="操作" width="230" fixed="right">
                     <template scope="scope">
-                        <el-button ref="releaseStatus" type="warning" size="mini" @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}</el-button>
-                        <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-                        <el-button type="danger" size="mini" @click="delCommodity(scope.$index, scope.row)">删除</el-button>
+                        <el-button style="display: inline-block;" ref="releaseStatus" type="warning" size="mini" @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}</el-button>
+                        <el-button style="display: inline-block;" type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
+                        <el-button style="display: inline-block;" type="danger" size="mini" @click="delCommodity(scope.$index, scope.row)">删除</el-button>
                         <!-- scope.row代表当前对应行 -->
                     </template>
                 </el-table-column>

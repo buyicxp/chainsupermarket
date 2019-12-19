@@ -28,16 +28,16 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="small" v-if="scope.row.stop===1"
+                        <el-button style="display: inline-block;" type="primary" size="small" v-if="scope.row.stop===1"
                                    @click="start(scope.$index, scope.row)">启用
                         </el-button>
-                        <el-button type="primary" size="small" v-if="scope.row.stop===0"
+                        <el-button style="display: inline-block;" type="primary" size="small" v-if="scope.row.stop===0"
                                    @click="blockes(scope.$index, scope.row)">停用
                         </el-button>
-                        <el-button type="info" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="danger" size="small" id="delete" @click="remove(scope.$index, scope.row)">删除
+                        <el-button style="display: inline-block;" type="info" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button style="display: inline-block;" type="danger" size="small" id="delete" @click="remove(scope.$index, scope.row)">删除
                         </el-button>
-                        <el-button type="success" size="small" v-if="scope.row.parentId===0"
+                        <el-button style="display: inline-block;" type="success" size="small" v-if="scope.row.parentId===0"
                                    @click="addzi(scope.$index,scope.row)">新增子类
                         </el-button>
                         <!-- scope.row代表当前对应行 -->

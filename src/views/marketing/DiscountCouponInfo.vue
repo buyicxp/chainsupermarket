@@ -1,8 +1,9 @@
 <template>
+
  <div>
         <div class="tou">
             <el-button type="primary" @click="add()" icon="el-icon-edit">新增优惠券</el-button>
-            <el-button type="danger" icon="el-icon-delete">删除</el-button>
+            <!--<el-button type="danger" icon="el-icon-delete">删除</el-button>-->
         </div>
         <div class="table">
             <el-table
@@ -84,7 +85,8 @@
                             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         <el-button
                                 size="mini"
-                                type="warning">领取记录</el-button>
+                                type="warning"
+                                @click="getTheTecord(scope.$index, scope.row)">领取记录</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -109,15 +111,18 @@
             this.find()
         },
         methods: {
+            //查看领取记录
+            getTheTecord(index, row){
+                this.$router.push({path: '/CouponCollectionInfo',query:{couponId:row.coupon.couponId}});
+            },
             //跳转到添加页面
             add(){
-                this.$router.replace('/AddDsicountCoupon')
+                this.$router.replace('/AddDsicountCoupon');
             },
             //修改事件
             handleEdit(index, row) {
                 console.log(index, row);
-                localStorage.setItem('discountcoupon', row.coupon.couponId);
-                this.$router.replace('/AddDsicountCoupon')
+                this.$router.push({path: '/AddDsicountCoupon',query:{couponId:row.coupon.couponId}});
             },
             //删除事件
             handleDelete(index, row) {

@@ -33,8 +33,8 @@
 								<i class="el-icon-menu">商品</i>
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="2-1"><el-link @click="$router.replace('/goodstype')">商品分类</el-link></el-menu-item>
-								<el-menu-item index="2-2"><el-link @click="$router.replace('/Commodity')">商品列表</el-link></el-menu-item>
+								<el-menu-item index="/goodstype">商品分类</el-menu-item>
+								<el-menu-item index="/Commodity">商品列表</el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 
@@ -43,7 +43,7 @@
 								<i class="el-icon-menu">订单</i>
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="3-1"><el-link @click="$router.replace('/OrderForm')">商品订单</el-link></el-menu-item>
+								<el-menu-item index="/OrderForm">商品订单</el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 
@@ -60,11 +60,16 @@
 							<template slot="title">
 								<i class="el-icon-menu">营销</i>
 							</template>
-							<el-menu-item-group>
+							<el-submenu index="5-1">
+								<template slot="title">满减满赠</template>
 								<el-menu-item index="/fu">满减满赠</el-menu-item>
+								<el-menu-item index="/add">新增满减满赠</el-menu-item>
+							</el-submenu>
+							<el-submenu index="5-2">
+								<template slot="title">拼团管理</template>
 								<el-menu-item index="/GroupActivities">拼团活动</el-menu-item>
-							</el-menu-item-group>
-							<el-submenu index="2-4">
+							</el-submenu>
+							<el-submenu index="5-3">
 								<template slot="title">
 									优惠券管理
 								</template>
@@ -99,7 +104,7 @@
 							</template>
 							<el-menu-item-group>
 								<el-menu-item index="/advertisingList">广告列表</el-menu-item>
-								<el-menu-item index="/advertisingType">新增广告类型</el-menu-item>
+								<el-menu-item index="/advertisingType">广告类型</el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 

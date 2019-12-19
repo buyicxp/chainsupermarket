@@ -27,7 +27,11 @@
 					<span>{{ (page - 1) * size + scope.$index + 1 }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="adVerTiImage" label="广告图标"></el-table-column>
+			<el-table-column prop="adVerTiImage" label="广告图标">
+				<template slot-scope="scope">
+					<img :src="scope.row.adVerTiImage" style="width: 60px;height: 60px;display: block;"/>
+				</template>
+			</el-table-column>
 			<el-table-column prop="adVerTiName" label="广告名称" align="center"></el-table-column>
 			<el-table-column prop="adVerTiLink" label="广告链接" align="center"></el-table-column>
 			<el-table-column prop="usable" label="是否可用" align="center" :formatter="analysis"></el-table-column>
@@ -59,29 +63,17 @@
 				<el-row>
 					<el-col :span="8">
 						<el-form-item label="广告图标:">
-							<el-upload
-								class="upload-demo"
-								action="https://jsonplaceholder.typicode.com/posts/"
-								:on-preview="handlePreview"
-								:on-remove="handleRemove"
-								:before-remove="beforeRemove"
-								multiple
-								:limit="3"
-								:on-exceed="handleExceed"
-								:file-list="fileList">
-								<el-button size="small" type="primary">点击上传</el-button>
-								<div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
-							</el-upload>
+							  
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="广告名称:"><el-input v-model="AdVerTiList.adVerTiName" style="width:138px"></el-input></el-form-item>
-					</el-col>
-					<el-col :span="8">
-						<el-form-item label="广告链接:"><el-input v-model="AdVerTiList.adVerTiLink" style="width:80px"></el-input></el-form-item>
+						<el-form-item label="广告链接:"><el-input v-model="AdVerTiList.adVerTiLink" style="width:180px"></el-input></el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
+					<el-col :span="8">
+						<el-form-item label="广告名称:"><el-input v-model="AdVerTiList.adVerTiName" style="width:138px"></el-input></el-form-item>
+					</el-col>
 					<el-col :span="8">
 						<el-form-item label="是否可用:" >
 							<template>
@@ -103,8 +95,6 @@
 							  </el-select>
 							</template>
 						</el-form-item>
-					</el-col>
-					<el-col :span="8">
 						<el-form-item><el-link href="advertisingType" type="danger">添加广告类型</el-link></el-form-item>
 					</el-col>
 				</el-row>
@@ -164,6 +154,16 @@ export default {
 		}
 	},
 	methods: {
+		handleRemove(file) {
+		        console.log(file);
+		      },
+		      handlePictureCardPreview(file) {
+		        this.dialogImageUrl = file.url;
+		        this.dialogVisible = true;
+		      },
+		      handleDownload(file) {
+		        console.log(file);
+		      },
 		analysis(row) {
 			if (row.usable == '1') {
 				return '可用';
@@ -207,7 +207,8 @@ export default {
 				let res = await axios.post(
 					'/adVer/save',
 					qs.stringify({
-						adVerTiImage: this.AdVerTiList.adVerTiImage,
+						adVerTiListId: this.AdVerTiList.adVerTiListId,
+						adVerTiImage: this.dialogImageUrl,
 						adVerTiName: this.AdVerTiList.adVerTiName,
 						adVerTiLink: this.AdVerTiList.adVerTiLink,
 						usable: this.radio,

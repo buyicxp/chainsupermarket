@@ -27,7 +27,13 @@ const routes = [{
 			{
 				path: '/fu',
 				name:'fu',
-				component: () => import( /* webpackChunkName: "about" */  '../views/marketing/FullActivity.vue')
+				component: () => import( /* webpackChunkName: "about" */ '../views/marketing/FullActivity.vue')
+			},
+			//新建满减满赠页面
+			{
+				path: '/add',
+				name:'add',
+				component: () => import (  /* webpackChunkName: "about" */  '../views/marketing/AddActivity.vue') 
 			},
 			{
 				path: '/advertisingType',
@@ -49,7 +55,12 @@ const routes = [{
 			  name: 'AddDsicountCoupon',
 			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/AddDsicountCoupon.vue')
 			},
-			/* {
+			{
+			  path: '/CouponCollectionInfo',
+			  name: 'CouponCollectionInfo',
+			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/CouponCollectionInfo.vue')
+			},
+			{
 				path: "/goodstype",
 				name: "goodstype",
 				component: () => import('../views/commodity/goodstype.vue')
@@ -68,7 +79,7 @@ const routes = [{
 				path: '/addGoods',
 				name: 'addGoods',
 				component: () => import('../views/commodity/addGoods.vue')
-			}, */
+			},
 		]
 	},
 	{

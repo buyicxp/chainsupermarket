@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div align="center">
 		<h2>登录</h2>
 			<el-form :inline="true" :model="userInfo" class="demo-form-inline">
 				<el-form-item label="用户名">
@@ -37,7 +37,7 @@
 					var res = response.data.msg;
 					alert(res);
 					if (res == '登录成功') {
-						setCookie('roles', response.data.success.roleList,(24*60*60)); // 使用cookie来记录是否登陆，这边跨域
+						setCookie('roles', response.data.success.roleList,(24*60*60)*21); // 使用cookie来记录是否登陆，这边跨域
 						let roles = getCookie('roles');
 						localStorage.setItem("ms_username", this.username); // 使用localstoage来记录登陆信息
 						localStorage.setItem("roles", response.data.success.roleList);

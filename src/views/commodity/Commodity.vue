@@ -3,25 +3,32 @@
 
         <el-main>
             <div class="div_btn">
-            <el-button type="danger" size="small" @click="$router.replace('/addGoods')">添加产品</el-button>
-<!--                <el-button type="info" size="small" @click="add">Excl批量增加</el-button>-->
-                <el-button type="info" size="small" @click="removerow">批量删除</el-button>
+                <el-button type="danger" size="small" @click="$router.replace('/addGoods')">添加产品</el-button>
+                <el-upload style="display: inline-block;margin-left: 10px" class="upload"
+                           action=""
+                           :multiple="false"
+                           :show-file-list="false"
+                           accept="csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                           :before-upload="resolver">
+                    <el-button type="success" size="small">Excl批量增加</el-button>
+                </el-upload>
+                <el-button style="margin-left: 10px" type="info" size="small" @click="removerow">批量删除</el-button>
                 <div class="div_form" style="display: inline-block">
-                <el-form :inline="true" :model="commodity" class="demo-form-inline">
-                    <el-form-item>
-                        <el-select v-model="initial" size="small" placeholder="全部分类">
-                            <el-option placeholder="全部分类" label="全部分类" value=""></el-option>
-                            <el-option v-for="item in type" :key="item.id" :label="item.typename" :value="item.id">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-input size="small" v-model="commodity.goodsName"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button size="small" @click="selectCommodity">搜索</el-button>
-                    </el-form-item>
-                </el-form>
+                    <el-form :inline="true" :model="commodity" class="demo-form-inline">
+                        <el-form-item>
+                            <el-select v-model="initial" size="small" placeholder="全部分类">
+                                <el-option placeholder="全部分类" label="全部分类" value=""></el-option>
+                                <el-option v-for="item in type" :key="item.id" :label="item.typename" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input size="small" v-model="commodity.goodsName"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button size="small" @click="selectCommodity">搜索</el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </div>
             <el-table :data="list"
@@ -34,9 +41,11 @@
                 <el-table-column prop="id" label="产品ID" width="150" fixed>
                 </el-table-column>
                 <el-table-column prop="picturepath" label="图标" width="150">
-                      <template slot-scope="scope">
-                        <img :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
-                      </template>
+                     
+                    <template slot-scope="scope">
+                            <img :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
+                         
+                    </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="标题" width="150">
                 </el-table-column>
@@ -46,14 +55,18 @@
                 </el-table-column>
                 <el-table-column prop="createdate" label="创建时间" width="160">
                     <template slot-scope="scope">
-                        <p>{{scope.row.createdate | formatDate  }}</p>
+                        <p>{{scope.row.createdate | formatDate }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="230" fixed="right">
                     <template scope="scope">
-                        <el-button ref="releaseStatus" type="warning" size="mini" @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}</el-button>
-                        <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-                        <el-button type="danger" size="mini" @click="delCommodity(scope.$index, scope.row)">删除</el-button>
+                        <el-button ref="releaseStatus" type="warning" size="mini"
+                                   @click="downCom(scope.$index, scope.row)">{{scope.row.upperDown==0 ? '下架' : '上架'}}
+                        </el-button>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">详情
+                        </el-button>
+                        <el-button type="danger" size="mini" @click="delCommodity(scope.$index, scope.row)">删除
+                        </el-button>
                         <!-- scope.row代表当前对应行 -->
                     </template>
                 </el-table-column>
@@ -67,12 +80,12 @@
                     <el-input v-model="commodity.goodsName" readonly="readonly"></el-input>
                 </el-form-item>
                 <el-form-item label="录入日期">
-                        <el-date-picker
-                                v-model="commodity.createdate"
-                                type="date"
-                                placeholder="选择日期"
-                        >
-                        </el-date-picker>
+                    <el-date-picker
+                            v-model="commodity.createdate"
+                            type="date"
+                            placeholder="选择日期"
+                    >
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="所属分类">
                     <el-input v-model="commodity.typeName" readonly="readonly"></el-input>
@@ -109,6 +122,9 @@
 
 <script>
     import myFormateDate from "../../assets/js/Date";
+
+    import * as XLSX from "xlsx";
+
     export default {
         data() {
             return {
@@ -120,8 +136,8 @@
                 commodity: {},
                 isList: [],
                 rowIndex: null,
-                initial:'',
-                type:[]
+                initial: '',
+                type: []
             }
         },
         created() {
@@ -183,7 +199,7 @@
                 })
             },
             downCom(index, row) {
-                if(row.upperDown===0) {
+                if (row.upperDown === 0) {
                     this.$axios.post('/commodity/underCarriage', this.qs.stringify({"id": row.id})).then(result => {
                         if (result.data === true) {
                             alert("下架成功");
@@ -193,7 +209,7 @@
                             alert("下架失败")
                         }
                     })
-                }else{
+                } else {
                     this.$axios.post('/commodity/grounding', this.qs.stringify({"id": row.id})).then(result => {
                         if (result.data === true) {
                             alert("上架成功");
@@ -205,58 +221,58 @@
                     })
                 }
             },
-        selectCommodity() {
-            this.$axios.post('/commodity/listCommodity',
-                this.qs.stringify({
-                    start: this.currentPage,
-                    pageSize: this.pageSize,
-                    goodsName: this.commodity.goodsName,
-                    ccategoryid:this.initial
-                })).then(result => {
-                console.log(result);
-                if (result.data.status === 200) {
-                    this.list = result.data.message;
-                } else {
-                    alert("获取数据失败");
-                }
-            })
-        },
-        selectionchange(selection) { // 选择行里面的id
-            this.isList = [];
-            selection.forEach(element => {
-                this.isList.push(element.id)
-            })
-        },
-        removerow() {
-            if (this.isList.length > 0) {
-                this.$confirm(`确定删除吗?`, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(() => {
-                    let idList = this.isList.toString();
-                    this.$axios.post('/commodity/dele',
-                        this.qs.stringify({isList: idList})).then(result => {
-                        if (result.data === true) {
-                            /* alert('删除成功')
-                                location.reload() */
-                            alert('删除成功');
-                            this.showTable(this.currentPage, this.pageSize);
-                            this.count()
-                        }
-                    })
+            selectCommodity() {
+                this.$axios.post('/commodity/listCommodity',
+                    this.qs.stringify({
+                        start: this.currentPage,
+                        pageSize: this.pageSize,
+                        goodsName: this.commodity.goodsName,
+                        ccategoryid: this.initial
+                    })).then(result => {
+                    console.log(result);
+                    if (result.data.status === 200) {
+                        this.list = result.data.message;
+                    } else {
+                        alert("获取数据失败");
+                    }
                 })
-            }
-        },
-        handleEdit(index, row) {
-            this.commodity = row;
-            this.iconFormVisible = true;
-            this.rowIndex = index;
-        },
-            close(){
-                this.commodity={};
-                this.iconFormVisible=false;
             },
-            getType(){
+            selectionchange(selection) { // 选择行里面的id
+                this.isList = [];
+                selection.forEach(element => {
+                    this.isList.push(element.id)
+                })
+            },
+            removerow() {
+                if (this.isList.length > 0) {
+                    this.$confirm(`确定删除吗?`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(() => {
+                        let idList = this.isList.toString();
+                        this.$axios.post('/commodity/dele',
+                            this.qs.stringify({isList: idList})).then(result => {
+                            if (result.data === true) {
+                                /* alert('删除成功')
+                                    location.reload() */
+                                alert('删除成功');
+                                this.showTable(this.currentPage, this.pageSize);
+                                this.count()
+                            }
+                        })
+                    })
+                }
+            },
+            handleEdit(index, row) {
+                this.commodity = row;
+                this.iconFormVisible = true;
+                this.rowIndex = index;
+            },
+            close() {
+                this.commodity = {};
+                this.iconFormVisible = false;
+            },
+            getType() {
                 this.$axios.post('/typeNameList').then(result => {
                     if (result.data.status === 200) {
                         this.type = result.data.message;
@@ -264,22 +280,94 @@
                         alert("获取数据失败");
                     }
                 })
-            }
-        },
-        filters:{
-            formatDate(time){
-                let date = new Date(time);
-                return myFormateDate.dateFormat(date,'yyyy-MM-dd-hh:mm:ss');
+            },
+            //Excl转JSON--批量文件上传
+            resolver(e) {
+                let file = e; // 文件信息
+                if (!file) {
+                    // 没有文件
+                    return false
+                } else if (!/\.(xls|xlsx)$/.test(file.name.toLowerCase())) {
+                    // 格式根据自己需求定义
+                    this.$message.error('上传格式不正确，请上传xls或者xlsx格式');
+                    return false
+                }
+                const fileReader = new FileReader();
+                fileReader.onload = (ev) => {
+                    try {
+                        const data = ev.target["result"];
+                        const workbook = XLSX.read(data, {
+                            type: 'binary' // 以字符编码的方式解析
+                        });
+                        const exlname = workbook.SheetNames[0]; // 取第一张表
+                        const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]); // 生成json表格内容
+                        let exl_data = [];
+                        for (let i = 0; i < exl.length; i++) {
+                            exl_data.push({
+                                id: 0,//产品表编号
+                                colorId: exl[i]["颜色"] || 0,//颜色表编号
+                                sizeId: exl[i]["尺码"] || 0,//尺码表编号
+                                details: exl[i]["详情"] || '',//产品详情
+                                goodsName: exl[i]["产品名称"] || '',//产品名称
+                                goodsTitle: exl[i]["卖点标题"] || '',//产品卖点标题
+                                typename: exl[i]["类型"] || '',//类型名称
+                                categoryId: exl[i]["产品分类表编号"] || 0,//产品分类表编号
+                                goodsCode: exl[i]["商品码"] || '',//商品码
+                                picturePath: exl[i]["小图"] || '',//产品图片路径
+                                bigPicturePath: exl[i]["大图"] || '',//产品大图路径
+                                createDate: myFormateDate.dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss'),//产品录入时间
+                                price: exl[i]["价格/单位"] || 0,//产品价格
+                                activityPrice: exl[i]["活动价"] || 0,//产品活动价格
+                                weight: exl[i]["产品重量"] || 0,//产品重量
+                                locking: exl[i]["锁定库存"] || 0,//锁定库存
+                                already: exl[i]["已购库存"] || 0,//已购库存
+                                disId: exl[i]["配送"] || 0,//配送id
+                                activityId: exl[i]["团购活动"] || 0,//拼团活动编号
+                                bounds: exl[i]["限时活动"] || 0,//限时活动编号
+                                presell: exl[i]["预售活动"] || 0,//预售活动编号
+                                upperDowm: exl[i]["上下架"] || 1,//产品上下架
+                                del: exl[i]["删除状态"] || 0,//删除状态
+                                putshelves: exl[i]["拉取产品"] || 0//拉取产品
+                            })
+                        }
+                        console.log(exl, exl_data);
+                        this.$axios.post('/commodity/piAddGoods', exl_data).then(result => {
+                            if (result.data.code === 200) {
+                                this.$message.success("添加了" + result.data.data + "条数据")
+                            } else {
+                                this.$message.error("添加数据失败")
+                            }
+                        }).catch(error => {
+                            console.error(error);
+                            this.$message.error("HTTP请求失败")
+                        });
+                        console.log(exl)
+                    } catch (e) {
+                        console.log('出错了：：');
+                        return false
+                    }
+                };
+                fileReader.readAsBinaryString(file);
+                return false
+            },
+
+            //
+            filters: {
+                formatDate(time) {
+                    let date = new Date(time);
+                    return myFormateDate.dateFormat(date, 'yyyy-MM-dd-hh:mm:ss');
+                }
             }
         }
     }
 </script>
 
 <style>
-    .div_btn{
+    .div_btn {
         transform: translate(-13%, -5%);
     }
-    .div_form{
+
+    .div_form {
         transform: translate(5%, -15%);
     }
 </style>

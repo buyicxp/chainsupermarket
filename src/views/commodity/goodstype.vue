@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-main>
-            <div class="div_btn">
+            <div class="div_btn_">
                 <el-button type="danger" size="small" @click="add">新增父类</el-button>
                 <!--                <el-button type="info" size="small" @click="add">Excl批量增加</el-button>-->
                 <el-button type="info" size="small" @click="removerow">批量删除</el-button>
@@ -436,7 +436,7 @@
 </script>
 
 <style>
-    .div_btn {
+    .div_btn_ {
         transform: translate(-42%, -50%);
     }
 </style>

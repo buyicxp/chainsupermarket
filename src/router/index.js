@@ -17,7 +17,6 @@ const routes = [{
 			title: '权限测试',
 			permission: true //开启权限验证
 		},
-<<<<<<< HEAD
 		children: 
 		[
 			{
@@ -50,28 +49,26 @@ const routes = [{
 			  name: 'AddDsicountCoupon',
 			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/AddDsicountCoupon.vue')
 			},
-=======
-		children: [ {
-			path: "/goodstype",
-			name: "goodstype",
-			component: () => import('../views/commodity/goodstype.vue')
-		},
-		{
-			path: "/Commodity",
-			name: "Commodity",
-			component: () => import('../views/commodity/Commodity.vue')
-		},
-		{
-			path: "/orderform",
-			name: "orderform",
-			component: () => import('../views/orderform/OrderForm.vue')
-		},
+			/* {
+				path: "/goodstype",
+				name: "goodstype",
+				component: () => import('../views/commodity/goodstype.vue')
+			},
+			{
+				path: "/Commodity",
+				name: "Commodity",
+				component: () => import('../views/commodity/Commodity.vue')
+			},
+			{
+				path: "/orderform",
+				name: "orderform",
+				component: () => import('../views/orderform/OrderForm.vue')
+			},
 			{
 				path: '/addGoods',
 				name: 'addGoods',
 				component: () => import('../views/commodity/addGoods.vue')
-			}
->>>>>>> f6a275847f9fa9dce8eb64f347a9a23033d8bf21
+			}, */
 		]
 	},
 	{

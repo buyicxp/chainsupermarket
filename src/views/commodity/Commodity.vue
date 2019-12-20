@@ -41,10 +41,8 @@
                 <el-table-column prop="id" label="产品ID" width="150" fixed>
                 </el-table-column>
                 <el-table-column prop="picturepath" label="图标" width="150">
-                     
                     <template slot-scope="scope">
-                            <img :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
-                         
+                            <img referrerpolicy='no-referrer' :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="标题" width="150">
@@ -54,6 +52,9 @@
                 <el-table-column prop="goodsCode" label="商品码" width="150">
                 </el-table-column>
                 <el-table-column prop="createdate" label="创建时间" width="160">
+                    <!-- <template slot-scope="scope">
+                         <p>{{scope.row["createdate"]}}</p>
+                     </template>-->
                     <template slot-scope="scope">
                         <p>{{scope.row.createdate | formatDate }}</p>
                     </template>
@@ -343,20 +344,19 @@
                         });
                         console.log(exl)
                     } catch (e) {
-                        console.log('出错了：：');
+                        console.error(e);
+                        this.$message.error("解析文件失败");
                         return false
                     }
                 };
                 fileReader.readAsBinaryString(file);
                 return false
-            },
-
-            //
-            filters: {
-                formatDate(time) {
-                    let date = new Date(time);
-                    return myFormateDate.dateFormat(date, 'yyyy-MM-dd-hh:mm:ss');
-                }
+            }
+        },
+        filters: {
+            formatDate(time) {
+                let date = new Date(time);
+                return myFormateDate.dateFormat(date, 'yyyy-MM-dd-hh:mm:ss');
             }
         }
     }

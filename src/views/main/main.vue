@@ -1,6 +1,6 @@
 <template>
     <el-container style="height: 100%; border: 1px solid #eee">
-        <!--头部的-->
+        <!--头部-->
         <el-header height="60px" width="100%">
             <el-menu class="el-menu-demo" mode="horizontal" background-color="#545c64"
                      text-color="#fff"

@@ -122,7 +122,8 @@
                         <el-tab-pane label="规格信息" name="second">
 
                             <el-row style="margin-top: 5px">
-                                <el-button>管理规格选项</el-button>
+                                <el-button type="primary" @click="changeStatus">商品规格管理</el-button>
+<!--                                <el-button>管理规格选项</el-button>-->
                             </el-row>
                             <el-row :gutter="10" class="text_guige">
                                 <el-col :span="18">
@@ -325,8 +326,206 @@
                 </template>
             </el-row>
 
-
         </el-main>
+
+
+        <!--颜色表数据表-->
+        <el-dialog
+                :visible.sync="isShownUpdate"
+                style="width: 1100px;
+                       margin-left: 150px">
+            <template>
+                <el-table
+                        :data="tableDataUpdate"
+                        style="width: 100%">
+                    <el-table-column
+                            label="编号"
+                            width="100">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            label="名称"
+                            width="100">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.colourname }}</span>
+                        </template>
+                    </el-table-column>
+                    <div>
+                        <el-table-column
+                                label="图片"
+                                width="100">
+                            <template slot-scope="scope">
+                                <span style="margin-left: 10px"><img src="scope.row.colourpath"></span>
+                            </template>
+                        </el-table-column>
+                    </div>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+
+                            <el-popover
+                                    placement="left"
+                                    width="200"
+                                    trigger="click">
+                                <el-input v-model="inputUpdate" placeholder="请输入选项值"  style="margin-bottom: 10px" ></el-input>
+                                <div>
+                                    修改小图:
+                                    <el-upload
+                                            class="avatar-uploader"
+                                            action="https://jsonplaceholder.typicode.com/posts/"
+                                            :show-file-list="false"
+                                            :on-success="handleAvatarSuccess"
+                                            :before-upload="beforeAvatarUpload">
+                                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                </div>
+                                <el-button style="margin-left: 50px"  type="primary" @click="specUpdate(scope.$index,scope.row.id)" round>确认修改</el-button>
+                                <el-button
+                                        slot="reference"
+                                        size="mini"
+                                        @click="handleEditUpdate(scope.$index, scope.row.colourname)">修改</el-button>
+                            </el-popover>
+
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="open(scope.$index, scope.row.id)">删除</el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        background
+                        layout="prev, pager, next"
+                        :total="counts"
+                        :page-size="pageSize"
+                        :current-page="currentPage"
+                >
+                </el-pagination>
+            </template>
+        </el-dialog>
+
+        <!--尺码表数据-->
+        <el-dialog
+                :visible.sync="isShownUpdateSize"
+                style="width: 1100px;
+                       margin-left: 150px">
+            <template>
+                <el-table
+                        :data="tableDataSize"
+                        style="width: 100%">
+                    <el-table-column
+                            label="编号"
+                            width="150">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.sizeid }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            label="名称"
+                            width="200">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.sizename }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+
+                            <el-popover
+                                    placement="left"
+                                    width="200"
+                                    trigger="click">
+                                <el-input v-model="inputSize" placeholder="请输入选项值"  style="margin-bottom: 10px" ></el-input>
+                                <el-button style="margin-left: 50px"  type="primary" @click="specSize(scope.$index,scope.row.sizeid)" round>确认修改</el-button>
+                                <el-button
+                                        slot="reference"
+                                        size="mini"
+                                        @click="handleEditSize(scope.$index, scope.row.sizename)">修改</el-button>
+                            </el-popover>
+
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="openSize(scope.$index, scope.row.sizeid)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        @size-change="handleSizeChangeSize"
+                        @current-change="handleCurrentChangeSize"
+                        background
+                        layout="prev, pager, next"
+                        :total="countSize"
+                        :page-size="pageSizeShoe"
+                        :current-page="currentPageSize"
+                >
+                </el-pagination>
+            </template>
+        </el-dialog>
+
+        <el-dialog :visible.sync="isShown">
+            <el-table
+                    :data="tableData"
+                    style="width: 100%">
+                <el-table-column
+                        label="购物选项"
+                        width="120">
+                    <template slot-scope="scope">
+                        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="选项值"
+                        width="300">
+                    <template slot-scope="scope" >
+                        <span style="margin-left: 10px"  v-for="site in scope.row.name">{{site.colourname }}</span>
+                        <span style="margin-left: 10px"  v-for="site in scope.row.name">{{ site.sizename }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="210">
+                    <template slot-scope="scope">
+                        <el-popover
+                                placement="left"
+                                width="200"
+                                trigger="click">
+                            <el-input v-model="input" placeholder="请输入选项值" style="margin-bottom: 10px" ></el-input>
+                            <div v-if="scope.$index==0">
+                                添加小图:
+                                <el-upload
+                                        class="avatar-uploader"
+                                        action="https://jsonplaceholder.typicode.com/posts/"
+                                        :show-file-list="false"
+                                        :on-success="handleAvatarSuccess"
+                                        :before-upload="beforeAvatarUpload">
+                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </div>
+                            <el-button style="margin-left: 50px"  type="primary" @click="specInsert(scope.$index)" round>确认添加</el-button>
+                            <el-button
+                                    slot="reference"
+                                    size="mini"
+                                    @click="handleInsert(scope.$index, scope.row)">添加</el-button>
+                        </el-popover>
+
+
+                        <el-button
+                                style="margin-left: 20px"
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -344,6 +543,43 @@
         components: {quillEditor},
         data() {
             return {
+                pageSize:"5",
+                pageSizeShoe:"5",
+                currentPage:"1",
+                currentPageSize:"1",
+                imageUrl: '',
+                counts:0,
+                countSize:0,
+                input: '',
+                inputUpdate: '',
+                inputSize: '',
+                isShown: false,
+                isShownUpdate:false,
+                isShownUpdateSize:false,
+                tableData:[{
+                    date:"颜色",
+                    name:"颜色无数据",
+                },{
+                    date:"尺码",
+                    name:"尺码无数据"
+                }],
+                tableDataUpdate:[{
+                    date:"颜色",
+                    name:"颜色无数据",
+                },{
+                    date:"尺码",
+                    name:"尺码无数据"
+                }
+                ],
+                tableDataSize:[{
+                    date:"颜色",
+                    name:"颜色无数据",
+                },{
+                    date:"尺码",
+                    name:"尺码无数据"
+                }
+                ],
+
                 //第一个页面
                 name: '',//产品名称
                 company: '',//产品单位
@@ -390,7 +626,7 @@
                 yInput: '',//预售活动输入框
                 res: {
                     colorId: 0,
-                    sizeId: 0,//
+                    sizeId: 0,
                     details: '',//产品详情编号
                     goodsName: '',//名称
                     goodsTitle: '',//标题
@@ -420,6 +656,269 @@
             this.getColor();
         },
         methods: {
+            open(index, row) {
+                this.$confirm('此操作将删除该条记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.handleDelete(index, row);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            openSize(index, row) {
+                this.$confirm('此操作将删除该条记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.handleDeleteSize(index, row);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            handleSizeChange: function(size) {
+                this.pageSize = size;
+                console.log(this.pageSize); //每页下拉显示数据
+                this.showTable(this.currentPage, this.pageSize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(this.currentPage); //点击第几页
+                this.showTable(this.currentPage, this.pageSize);
+            },
+            handleSizeChangeSize: function(size) {
+                this.pageSizeShoe = size;
+                console.log(this.pageSizeShoe); //每页下拉显示数据
+                this.showTableSize(this.currentPageSize, this.pageSizeShoe);
+            },
+            handleCurrentChangeSize: function(currentPage) {
+                this.currentPageSize = currentPage;
+                console.log(this.currentPage); //点击第几页
+                this.showTableSize(this.currentPageSize, this.pageSizeShoe);
+            },
+            //颜色表总记录数方法
+            selectCount() {
+                this.$axios.post("/commodity/goodsCount").then((response) => {
+                    this.counts =response.data
+                })
+            },
+            //尺码表总记录数方法
+            selectSizeCount() {
+                this.$axios.post("/GoodsSize/goodsSizeCount").then((response) => {
+                    this.countSize =response.data
+                })
+            },
+            showTable(currentPage,pagseSize) {
+                this.isShownUpdate=true;
+                this.$axios.post("/commodity/pageInfoGoodsColour/", this.qs.stringify({
+                    'currentPage': this.currentPage,
+                    'pageSize': this.pageSize
+                })).then((response) => {
+                    this.tableDataUpdate=response.data
+                })
+            },
+            showTableSize(currentPage,pagseSize) {
+                this.isShownUpdateSize=true;
+                this.$axios.post("/GoodsSize/goodsSizePage/", this.qs.stringify({
+                    'currentPage': this.currentPageSize,
+                    'pageSize': this.pageSizeShoe
+                })).then((response) => {
+                    this.tableDataSize=response.data
+                })
+            },
+            specInsert(index){
+                if(index==0){
+                    if(!this.input==''){
+                        this.$axios.post("/commodity/goodsStandardAdd/", this.qs.stringify({
+                            'colourname': this.input,
+                            'colourpath': this.imageUrl
+                        })).then((response) => {
+                            var res = response.data.toString()
+                            if(res == 'true'){
+                                this.input='';
+                                this.imageUrl='';
+                                alert("添加成功");
+                                this.$axios.post("/commodity/StandardSelect/").then((response) => {
+                                    this.tableData[0].name =response.data
+                                    this.tableDataUpdate = response.data
+                                })
+                            }else{
+                                alert("添加失败");
+                            }
+                        })
+                    }else{
+                        alert("请输入选项值");
+                    }
+                }else {
+                    if (!this.input == '') {
+                        this.$axios.post("/GoodsSize/goodsSizeInsert/", this.qs.stringify({
+                            'sizeName': this.input
+                        })).then((response) => {
+                            var res = response.data.toString()
+                            if (res == 'true') {
+                                this.input = '';
+                                alert("添加成功");
+                                this.$axios.post("/GoodsSize/goodsSizeSelect/").then((response) => {
+                                    this.tableData[1].name = response.data
+                                })
+                            } else {
+                                alert("添加失败");
+                            }
+                        })
+                    }else{
+                        alert("请输入选项值");
+                    }
+                }
+            },
+            specUpdate(index,id){
+                if(!this.inputUpdate==''){
+                    this.$axios.post("/commodity/goodsStandardUpdate/", this.qs.stringify({
+                        'id':id,
+                        'colourname': this.inputUpdate,
+                        'colourpath': this.imageUrl
+                    })).then((response) => {
+                        var res = response.data.toString()
+                        if(res == 'true'){
+                            this.input='';
+                            this.imageUrl='';
+                            alert("修改成功");
+                            this.selectCount();
+                            this.getStandardSelect();
+                            this.showTable(this.currentPage,this.pageSize)
+                        }else{
+                            alert("修改失败");
+                        }
+                    })
+                }else{
+                    alert("选择项值不能为空");
+                }
+
+
+            },
+            specSize(index,id){
+                if(!this.inputUpdate=='') {
+                    this.$axios.post("/GoodsSize/goodsSizeUpdate/", this.qs.stringify({
+                        'sizeid': id,
+                        'sizeName': this.inputSize
+                    })).then((response) => {
+                        alert(id + "dsfa")
+                        var res = response.data.toString()
+                        if (res == 'true') {
+                            this.input = '';
+                            alert("修改成功");
+                            this.getStandardSelectSize();
+                            this.showTableSize(this.currentPageSize, this.pageSizeShoe);
+                        } else {
+                            alert("修改失败");
+                        }
+                    })
+                }else{
+                    alert("选择项值不能为空");
+                }
+            },
+            handleInsert(index, row) {
+                console.log(index, row);
+            },
+            handleEdit(index, row) {
+                if(index==0){
+                    this.isShownUpdate = true
+                    //调用查询颜色总记录数
+                    this.selectCount();
+                    this.showTable(this.currentPage,this.pageSize)
+                }else{
+                    this.isShownUpdateSize = true
+                    this.selectSizeCount();
+                    this.showTableSize(this.currentPageSize,this.pagseSizeShoe);
+                }
+
+            },
+            handleEditUpdate(index,row) {
+                this.inputUpdate = row
+            },
+            handleEditSize(index,row) {
+                this.inputSize = row
+
+            },
+            handleDelete(index, row) {
+                this.$axios.post("/commodity/goodsStandardDel/", this.qs.stringify({
+                    'id':row,
+                })).then((response) => {
+                    var res = response.data.toString()
+                    if(res == 'true'){
+                        this.selectCount();
+                        this.getStandardSelect();
+                        this.showTable(this.currentPage,this.pageSize)
+                    }else{
+                        alert("删除失败");
+                    }
+                })
+            },
+            handleDeleteSize(index, row) {
+                this.$axios.post("/GoodsSize/goodsSizeDel/", this.qs.stringify({
+                    'sizeid':row,
+                })).then((response) => {
+                    var res = response.data.toString()
+                    if(res == 'true'){
+                        this.getStandardSelectSize();
+                        this.showTableSize(this.currentPageSize,this.pageSizeShoe)
+                    }else{
+                        alert("删除失败");
+                    }
+                })
+            },
+            getStandardSelect(){
+                this.$axios.post("/commodity/StandardSelect/").then((response) => {
+                    this.tableData[0].name =response.data
+                })
+            },
+            getStandardSelectSize(){
+                this.$axios.post("/GoodsSize/goodsSizeSelect/").then((response) => {
+                    this.tableData[1].name =response.data
+                })
+            },
+            changeStatus: function () {
+                if (this.isShown) {
+                    this.isShown = false
+                } else {
+                    this.isShown = true
+                }
+                this.getStandardSelect();
+                this.getStandardSelectSize();
+            },
+            handleAvatarSuccess(res, file) {
+
+                this.imageUrl = URL.createObjectURL(file.raw);
+                alert(this.imageUrl)
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+
+
             active1() {
                 this.activeName = 'first';
             },
@@ -642,6 +1141,50 @@
 </script>
 
 <style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+    @keyframes dialog-fade-in {
+        0% {
+            transform: translate3d(0, 100%, 0);
+            opacity: 0;
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+    @keyframes dialog-fade-out {
+        0% {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+        100% {
+            transform: translate3d(0, -100%, 0);
+            opacity: 0;
+        }
+    }
+
     /*引入外部样式*/
     /*这个分号一定要写，要不会报错*/
     /*产品上传灰色框*/

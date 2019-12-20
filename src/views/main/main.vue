@@ -70,6 +70,14 @@
 								<el-menu-item index="/GroupActivities">拼团活动</el-menu-item>
 							</el-submenu>
 							<el-submenu index="5-3">
+								<template slot="title">抢购管理</template>
+								<el-menu-item index="/PanicBuying">抢购活动</el-menu-item>
+							</el-submenu>
+							<el-submenu index="5-4">
+								<template slot="title">预售管理</template>
+								<el-menu-item index="/presell">预售活动</el-menu-item>
+							</el-submenu>
+							<el-submenu index="5-5">
 								<template slot="title">
 									优惠券管理
 								</template>

@@ -61,6 +61,16 @@ const routes = [{
 			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/CouponCollectionInfo.vue')
 			},
 			{
+			  path: '/PanicBuying',
+			  name: 'PanicBuying',
+			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/PanicBuying.vue')
+			},
+			{
+			  path: '/presell',
+			  name: 'presell',
+			  component: () => import( /* webpackChunkName: "about" */ '../views/marketing/presell.vue')
+			},
+			{
 				path: "/goodstype",
 				name: "goodstype",
 				component: () => import('../views/commodity/goodstype.vue')

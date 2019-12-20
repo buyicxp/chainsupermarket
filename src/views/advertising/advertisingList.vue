@@ -5,15 +5,10 @@
 			<div class="serach">
 				<el-col :span="18">
 					<template>
-					  <el-select v-model="value" placeholder="广告分类">
+						<el-select v-model="value" placeholder="广告分类">
 							<el-option label="全部" value="0"></el-option>
-					    <el-option
-					      v-for="item in TypeList"
-					      :key="item.advertisingId"
-					      :label="item.advertisingName"
-					      :value="item.advertisingId">
-					    </el-option>
-					  </el-select>
+							<el-option v-for="item in TypeList" :key="item.advertisingId" :label="item.advertisingName" :value="item.advertisingId"></el-option>
+						</el-select>
 					</template>
 				</el-col>
 				<el-input placeholder="请输入搜索的词" v-model="AdVerTiList.adVerTiNamei" clearable style="width: 10.625rem;" @clear="getPurchaseList()"></el-input>
@@ -29,14 +24,14 @@
 			</el-table-column>
 			<el-table-column prop="adVerTiImage" label="广告图标">
 				<template slot-scope="scope">
-					<img :src="scope.row.adVerTiImage" style="width: 60px;height: 60px;display: block;"/>
+					<img :src="scope.row.adVerTiImage" style="width: 60px;height: 60px;display: block;" />
 				</template>
 			</el-table-column>
 			<el-table-column prop="adVerTiName" label="广告名称" align="center"></el-table-column>
 			<el-table-column prop="adVerTiLink" label="广告链接" align="center"></el-table-column>
 			<el-table-column prop="usable" label="是否可用" align="center" :formatter="analysis"></el-table-column>
 			<el-table-column prop="enteringTime" label="录入时间"></el-table-column>
-			<el-table-column prop="type" label="广告分类"></el-table-column>
+			<el-table-column prop="type[0].advertisingName" label="广告分类" align="center"></el-table-column>
 			<el-table-column label="编辑" width="100">
 				<template slot-scope="scope">
 					<el-button type="primary" icon="el-icon-edit" size="mini" @click="editAdVerTiList(scope.row)">修改</el-button>
@@ -62,21 +57,20 @@
 			<el-form ref="form" label-width="120px" style="display: block;content: 0px;">
 				<el-row>
 					<el-col :span="8">
-						<el-form-item label="广告图标:">
-							  <img v-if="imageUrl" :src="imageUrl" style="width: 120px;height: 120px;display: block;"/>
-						</el-form-item>
-					</el-col>				
+						<el-form-item label="广告图标:"><img v-if="imageUrl" :src="imageUrl" style="width: 120px;height: 120px;display: block;" /></el-form-item>
+					</el-col>
 					<el-col :span="5">
 						<el-upload
-								class="upload-demo"
-								action="https://jsonplaceholder.typicode.com/posts/"
-								:on-preview="handlePreview"
-								:on-success="handleAvatarSuccess"
-								:on-remove="handleRemove"
-								:before-remove="beforeRemove"
-								multiple
-								:file-list="fileList">
-								<el-button size="small" type="primary">点击上传</el-button>
+							class="upload-demo"
+							action="https://jsonplaceholder.typicode.com/posts/"
+							:on-preview="handlePreview"
+							:on-success="handleAvatarSuccess"
+							:on-remove="handleRemove"
+							:before-remove="beforeRemove"
+							multiple
+							:file-list="fileList"
+						>
+							<el-button size="small" type="primary">点击上传</el-button>
 						</el-upload>
 					</el-col>
 					<el-col :span="8">
@@ -88,7 +82,7 @@
 						<el-form-item label="广告名称:"><el-input v-model="AdVerTiList.adVerTiName" style="width:138px"></el-input></el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="是否可用:" >
+						<el-form-item label="是否可用:">
 							<template>
 								<el-radio v-model="radio" label="1">是</el-radio>
 								<el-radio v-model="radio" label="2">否</el-radio>
@@ -96,16 +90,11 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="请选择分类:" >
+						<el-form-item label="请选择分类:">
 							<template>
-							  <el-select v-model="value" placeholder="广告分类">
-							    <el-option
-							      v-for="item in TypeList"
-							      :key="item.advertisingId"
-							      :label="item.advertisingName"
-							      :value="item.advertisingId">
-							    </el-option>
-							  </el-select>
+								<el-select v-model="value" placeholder="广告分类">
+									<el-option v-for="item in TypeList" :key="item.advertisingId" :label="item.advertisingName" :value="item.advertisingId"></el-option>
+								</el-select>
 							</template>
 						</el-form-item>
 					</el-col>
@@ -147,17 +136,18 @@ export default {
 			size: 5,
 			page: 1,
 			addFlag: true,
-			AdVerTiListVO : [],
-			AdVerTiList : {},
+			AdVerTiListVO: [],
+			AdVerTiList: {},
 			curId: '',
-			AdvertisingTypeVO : [],
-			AdvertisingType : {},
+			AdvertisingTypeVO: [],
+			AdvertisingType: {},
 			radio: '1',
-			TypeList:[],
+			TypeList: [],
 			value: '',
 			imageUrl: '',
-			file:'',
-			fileList:[],
+			file: '',
+			fileList: [],
+			typename:[],
 		};
 	},
 	watch: {
@@ -170,18 +160,17 @@ export default {
 	},
 	methods: {
 		handlePreview(file) {
-		  console.log(file);
+			console.log(file);
 		},
 		handleAvatarSuccess(res, file) {
-		this.imageUrl = URL.createObjectURL(file.raw);
-		          //图片路径
+			this.imageUrl = URL.createObjectURL(file.raw);
+			//图片路径
 		},
 		handleRemove(file, fileList) {
-			this.imageUrl = '',
-		  console.log(file, fileList);
+			(this.imageUrl = ''), console.log(file, fileList);
 		},
 		beforeRemove(file, fileList) {
-		  return this.$confirm(`确定移除 ${ file.name }？`);
+			return this.$confirm(`确定移除 ${file.name}？`);
 		},
 		analysis(row) {
 			if (row.usable == '1') {
@@ -211,7 +200,7 @@ export default {
 						index: this.page,
 						pageSize: this.size,
 						adVerTiName: this.AdVerTiList.adVerTiNamei,
-						advertisingTypeId: this.value,
+						advertisingTypeId: this.value
 					})
 				);
 				this.total = res.data.Total;
@@ -234,11 +223,10 @@ export default {
 						orderByBy: this.AdVerTiList.orderByBy,
 						advertisingTypeId: this.value,
 						advertContent: this.AdVerTiList.advertContent,
-						commodityId: this.AdVerTiList.commodityId,
+						commodityId: this.AdVerTiList.commodityId
 					})
 				);
-				this.imageUrl = '',
-				this.dialogVisible = false;
+				(this.imageUrl = ''), (this.dialogVisible = false);
 				this.AdVerTiList = {};
 				this.$message({
 					message: res.data.Msg,
@@ -279,13 +267,11 @@ export default {
 			this.addFlag = false;
 		},
 		addAdVerTiList() {
-			this.imageUrl = '',
-			this.fileList = [],
-			this.AdVerTiList = {};
+			(this.imageUrl = ''), (this.fileList = []), (this.AdVerTiList = {});
 			this.value = [];
 			this.dialogVisible = true;
 			this.addFlag = true;
-		},
+		}
 	},
 	mounted() {
 		this.getAdVerTiList();

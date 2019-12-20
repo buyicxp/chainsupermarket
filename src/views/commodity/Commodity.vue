@@ -42,7 +42,8 @@
                 </el-table-column>
                 <el-table-column prop="picturepath" label="图标" width="150">
                     <template slot-scope="scope">
-                            <img referrerpolicy='no-referrer' :src="scope.row.picturepath" style="width: 100px;height: 100px;display: block;"/>
+                            <img referrerpolicy='no-referrer' :src="scope.row.picturepath"
+                                 style="width: 100px;height: 100px;display: block;"/>
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="标题" width="150">
@@ -306,37 +307,37 @@
                         for (let i = 0; i < exl.length; i++) {
                             exl_data.push({
                                 id: 0,//产品表编号
-                                colorId: exl[i]["颜色"] || 0,//颜色表编号
-                                sizeId: exl[i]["尺码"] || 0,//尺码表编号
-                                details: exl[i]["详情"] || '',//产品详情
-                                goodsName: exl[i]["产品名称"] || '',//产品名称
-                                goodsTitle: exl[i]["卖点标题"] || '',//产品卖点标题
-                                typename: exl[i]["类型"] || '',//类型名称
-                                categoryId: exl[i]["产品分类表编号"] || 0,//产品分类表编号
-                                goodsCode: exl[i]["商品码"] || '',//商品码
-                                picturePath: exl[i]["小图"] || '',//产品图片路径
-                                bigPicturePath: exl[i]["大图"] || '',//产品大图路径
+                                colorId: exl[i]["颜色"],//颜色表编号
+                                sizeId: exl[i]["尺码"],//尺码表编号
+                                details: exl[i]["详情"],//产品详情
+                                goodsName: exl[i]["产品名称"],//产品名称
+                                goodsTitle: exl[i]["卖点标题"],//产品卖点标题
+                                typename: exl[i]["类型"],//类型名称
+                                categoryId: exl[i]["产品分类表编号"],//产品分类表编号
+                                goodsCode: exl[i]["商品码"],//商品码
+                                picturePath: exl[i]["小图"],//产品图片路径
+                                bigPicturePath: exl[i]["大图"],//产品大图路径
                                 createDate: myFormateDate.dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss'),//产品录入时间
-                                price: exl[i]["价格/单位"] || 0,//产品价格
-                                activityPrice: exl[i]["活动价"] || 0,//产品活动价格
-                                weight: exl[i]["产品重量"] || 0,//产品重量
-                                locking: exl[i]["锁定库存"] || 0,//锁定库存
-                                already: exl[i]["已购库存"] || 0,//已购库存
-                                disId: exl[i]["配送"] || 0,//配送id
-                                activityId: exl[i]["团购活动"] || 0,//拼团活动编号
-                                bounds: exl[i]["限时活动"] || 0,//限时活动编号
-                                presell: exl[i]["预售活动"] || 0,//预售活动编号
-                                upperDowm: exl[i]["上下架"] || 1,//产品上下架
-                                del: exl[i]["删除状态"] || 0,//删除状态
-                                putshelves: exl[i]["拉取产品"] || 0//拉取产品
+                                price: exl[i]["价格/单位"],//产品价格
+                                activityPrice: exl[i]["活动价"],//产品活动价格
+                                weight: exl[i]["产品重量"],//产品重量
+                                locking: exl[i]["锁定库存"],//锁定库存
+                                already: exl[i]["已购库存"],//已购库存
+                                disId: exl[i]["配送"],//配送id
+                                activityId: exl[i]["团购活动"],//拼团活动编号
+                                bounds: exl[i]["限时活动"],//限时活动编号
+                                presell: exl[i]["预售活动"],//预售活动编号
+                                upperDowm: exl[i]["上下架"],//产品上下架
+                                del: exl[i]["删除状态"],//删除状态
+                                putshelves: exl[i]["拉取产品"]//拉取产品
                             })
                         }
                         console.log(exl, exl_data);
                         this.$axios.post('/commodity/piAddGoods', exl_data).then(result => {
                             if (result.data.code === 200) {
-                                this.$message.success("添加了" + result.data.data + "条数据")
+                                this.$message.success("成功添加了" + result.data.data + "件产品")
                             } else {
-                                this.$message.error("添加数据失败")
+                                this.$message.error("添加产品失败，正确的行数为：" + result.data.data)
                             }
                         }).catch(error => {
                             console.error(error);

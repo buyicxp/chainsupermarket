@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-main>
-            <div class="div_btn">
+            <div class="div_btn_">
                 <el-button type="danger" size="small" @click="add">新增父类</el-button>
                 <!--                <el-button type="info" size="small" @click="add">Excl批量增加</el-button>-->
                 <el-button type="info" size="small" @click="removerow">批量删除</el-button>
@@ -250,14 +250,14 @@
                 //var ctime = this.brand.ctime;
                 //var date = myFormateDate.dateFormat(new Date(ctime),'yyyy-MM-dd');
                 if (this.dialogTitle === '分类编辑') {
-                    // if (that.goodstype.typename == null || that.goodstype.typename == ''){
-                    //     that.$alert("名称不能为空，请您重新输入");
-                    //     return
-                    // }
-                    // if(that.goodstype.typecount == null){
-                    //     that.$alert("数量不能为空，请您重新输入");
-                    //     return
-                    // }
+                    if (that.goodstype.typename === null || that.goodstype.typename === ''){
+                        that.$alert('名称不能为空，请您重新输入');
+                        return
+                    }
+                    if(that.goodstype.typecount === null){
+                        that.$alert('数量不能为空，请您重新输入');
+                        return
+                    }
                     //this.list[this.rowIndex].name=this.goodstype.typename
                     //this.list[this.rowIndex].ctime=this.goodstype.typecount;
                     let s = {
@@ -416,15 +416,6 @@
                 this.dialogTitle = '分类编辑';
                 this.goodstype = row;
                 this.iconFormVisible = true;
-                //this.rowIndex = index;
-            //},
-            // feinull(){
-            //     if (this.goodstype.typename===''||this.goodstype.typename === null ||
-            //         this.goodstype.typecount===''||this.goodstype.typecount === null){
-            //         this.$alert("内容不能为空，请您重新输入");
-            //         //return;
-            //     }
-            // }
         },
         //filters: {
         // formatDate(time) {
@@ -436,7 +427,7 @@
 </script>
 
 <style>
-    .div_btn {
+    .div_btn_ {
         transform: translate(-42%, -50%);
     }
 </style>

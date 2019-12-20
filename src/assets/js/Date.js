@@ -1,3 +1,4 @@
+//时间转换
 var myFormateDate = {
     padLeftZero: function (str) {
         return ('00' + str).substr(str.length)

@@ -17,6 +17,7 @@ const routes = [{
 			title: '权限测试',
 			permission: true //开启权限验证
 		},
+<<<<<<< HEAD
 		children: 
 		[
 			{
@@ -85,19 +86,35 @@ const routes = [{
 				name: "orderform",
 				component: () => import('../views/orderform/OrderForm.vue')
 			},
+=======
+		children: [ {
+			path: "/goodstype",
+			name: "goodstype",
+			component: () => import('../views/commodity/goodstype.vue')
+		},
+		{
+			path: "/Commodity",
+			name: "Commodity",
+			component: () => import('../views/commodity/Commodity.vue')
+		},
+		{
+			path: "/orderform",
+			name: "orderform",
+			component: () => import('../views/orderform/OrderForm.vue')
+		},
+>>>>>>> e3ea12e9c1f24a5b2f40c188eed4fe78a60cde6d
 			{
 				path: '/addGoods',
 				name: 'addGoods',
 				component: () => import('../views/commodity/addGoods.vue')
-			},
+			}
 		]
 	},
 	{
 		path: '/login',
 		name: 'login',
 		component: () => import( /* webpackChunkName: "about" */ '../views/log/login.vue')
-	},
-	
+	}
 ]
 
 const router = new VueRouter({

@@ -279,11 +279,11 @@ export default {
 	font-family: Helvetica, sans-serif;
 	text-align: center;
 }
-.el-button {
+#app .el-button {
 	display: block;
 	padding: 10px;
 }
-.serach {
+#app .serach {
 	text-align: right;
 }
 </style>

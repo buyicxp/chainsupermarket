@@ -63,8 +63,21 @@
 				<el-row>
 					<el-col :span="8">
 						<el-form-item label="广告图标:">
-							  
+							  <img v-if="imageUrl" :src="imageUrl" style="width: 120px;height: 120px;display: block;"/>
 						</el-form-item>
+					</el-col>				
+					<el-col :span="5">
+						<el-upload
+								class="upload-demo"
+								action="https://jsonplaceholder.typicode.com/posts/"
+								:on-preview="handlePreview"
+								:on-success="handleAvatarSuccess"
+								:on-remove="handleRemove"
+								:before-remove="beforeRemove"
+								multiple
+								:file-list="fileList">
+								<el-button size="small" type="primary">点击上传</el-button>
+						</el-upload>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="广告链接:"><el-input v-model="AdVerTiList.adVerTiLink" style="width:180px"></el-input></el-form-item>
@@ -95,7 +108,6 @@
 							  </el-select>
 							</template>
 						</el-form-item>
-						<el-form-item><el-link href="advertisingType" type="danger">添加广告类型</el-link></el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
@@ -103,7 +115,7 @@
 						<el-form-item label="广告排序:"><el-input v-model="AdVerTiList.orderByBy" style="width:80px"></el-input></el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="广告商品:"><el-input v-model="AdVerTiList.advertContent" style="width:138px"></el-input></el-form-item>
+						<el-form-item label="广告商品编号:"><el-input v-model="AdVerTiList.advertContent" style="width:138px"></el-input></el-form-item>
 					</el-col>
 				</el-row>
 				<el-form-item label="说明:"><el-input v-model="AdVerTiList.commodityId" type="textarea" :rows="4"></el-input></el-form-item>
@@ -143,6 +155,9 @@ export default {
 			radio: '1',
 			TypeList:[],
 			value: '',
+			imageUrl: '',
+			file:'',
+			fileList:[],
 		};
 	},
 	watch: {
@@ -154,16 +169,20 @@ export default {
 		}
 	},
 	methods: {
-		handleRemove(file) {
-		        console.log(file);
-		      },
-		      handlePictureCardPreview(file) {
-		        this.dialogImageUrl = file.url;
-		        this.dialogVisible = true;
-		      },
-		      handleDownload(file) {
-		        console.log(file);
-		      },
+		handlePreview(file) {
+		  console.log(file);
+		},
+		handleAvatarSuccess(res, file) {
+		this.imageUrl = URL.createObjectURL(file.raw);
+		          //图片路径
+		},
+		handleRemove(file, fileList) {
+			this.imageUrl = '',
+		  console.log(file, fileList);
+		},
+		beforeRemove(file, fileList) {
+		  return this.$confirm(`确定移除 ${ file.name }？`);
+		},
 		analysis(row) {
 			if (row.usable == '1') {
 				return '可用';
@@ -208,7 +227,7 @@ export default {
 					'/adVer/save',
 					qs.stringify({
 						adVerTiListId: this.AdVerTiList.adVerTiListId,
-						adVerTiImage: this.dialogImageUrl,
+						adVerTiImage: this.imageUrl,
 						adVerTiName: this.AdVerTiList.adVerTiName,
 						adVerTiLink: this.AdVerTiList.adVerTiLink,
 						usable: this.radio,
@@ -218,6 +237,7 @@ export default {
 						commodityId: this.AdVerTiList.commodityId,
 					})
 				);
+				this.imageUrl = '',
 				this.dialogVisible = false;
 				this.AdVerTiList = {};
 				this.$message({
@@ -259,6 +279,8 @@ export default {
 			this.addFlag = false;
 		},
 		addAdVerTiList() {
+			this.imageUrl = '',
+			this.fileList = [],
 			this.AdVerTiList = {};
 			this.value = [];
 			this.dialogVisible = true;

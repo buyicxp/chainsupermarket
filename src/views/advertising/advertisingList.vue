@@ -104,10 +104,10 @@
 						<el-form-item label="广告排序:"><el-input v-model="AdVerTiList.orderByBy" style="width:80px"></el-input></el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="广告商品编号:"><el-input v-model="AdVerTiList.advertContent" style="width:138px"></el-input></el-form-item>
+						<el-form-item label="广告商品编号:"><el-input v-model="AdVerTiList.commodityId" style="width:138px"></el-input></el-form-item>
 					</el-col>
 				</el-row>
-				<el-form-item label="说明:"><el-input v-model="AdVerTiList.commodityId" type="textarea" :rows="4"></el-input></el-form-item>
+				<el-form-item label="说明:"><el-input v-model="AdVerTiList.advertContent" type="textarea" :rows="4"></el-input></el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="success" @click="saveAdVerTiList()" style="display: inline-block;">保存</el-button>
@@ -147,7 +147,7 @@ export default {
 			imageUrl: '',
 			file: '',
 			fileList: [],
-			typename:[],
+			typename: []
 		};
 	},
 	watch: {
@@ -210,31 +210,58 @@ export default {
 				console.log(e);
 			}
 		},
+		checks() {
+			var obj = this;
+			if (obj.imageUrl == '') {
+				obj.$alert('没有上传广告图片！');
+				return false;
+			}
+			if (obj.AdVerTiList.adVerTiLink == null) {
+				obj.$alert('广告链接不能为空！');
+				return false;
+			}
+			if (obj.AdVerTiList.adVerTiName == null) {
+				obj.$alert('广告名称不能为空！');
+				return false;
+			}
+			if (obj.value == 0) {
+				obj.$alert('请选择广告分类');
+				return false;
+			}
+			if (obj.AdVerTiList.commodityId == null) {
+				obj.$alert('请输入商品id');
+				return false;
+			}
+			return true;
+		},
 		async saveAdVerTiList() {
-			try {
-				let res = await axios.post(
-					'/adVer/save',
-					qs.stringify({
-						adVerTiListId: this.AdVerTiList.adVerTiListId,
-						adVerTiImage: this.imageUrl,
-						adVerTiName: this.AdVerTiList.adVerTiName,
-						adVerTiLink: this.AdVerTiList.adVerTiLink,
-						usable: this.radio,
-						orderByBy: this.AdVerTiList.orderByBy,
-						advertisingTypeId: this.value,
-						advertContent: this.AdVerTiList.advertContent,
-						commodityId: this.AdVerTiList.commodityId
-					})
-				);
-				(this.imageUrl = ''), (this.dialogVisible = false);
-				this.AdVerTiList = {};
-				this.$message({
-					message: res.data.Msg,
-					type: 'success'
-				});
-				this.getAdVerTiList();
-			} catch (e) {
-				console.log(e);
+			var flag = this.checks();
+			if (flag) {
+				try {
+					let res = await axios.post(
+						'/adVer/save',
+						qs.stringify({
+							adVerTiListId: this.AdVerTiList.adVerTiListId,
+							adVerTiImage: this.imageUrl,
+							adVerTiName: this.AdVerTiList.adVerTiName,
+							adVerTiLink: this.AdVerTiList.adVerTiLink,
+							usable: this.radio,
+							orderByBy: this.AdVerTiList.orderByBy,
+							advertisingTypeId: this.value,
+							commodityId: this.AdVerTiList.commodityId,
+							advertContent: this.AdVerTiList.advertContent
+						})
+					);
+					(this.imageUrl = ''), (this.dialogVisible = false);
+					this.AdVerTiList = {};
+					this.$message({
+						message: res.data.Msg,
+						type: 'success'
+					});
+					this.getAdVerTiList();
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		},
 		delAdVerTiList(row) {
@@ -267,7 +294,7 @@ export default {
 			this.addFlag = false;
 		},
 		addAdVerTiList() {
-			(this.imageUrl = ''), (this.fileList = []), (this.AdVerTiList = {});
+			(this.imageUrl = ''), (this.fileList = []), (this.AdVerTiList = { orderByBy: 0 });
 			this.value = [];
 			this.dialogVisible = true;
 			this.addFlag = true;

@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="app1">
 		<el-row>
 			<el-col :span="1" class="grid"><el-button type="success" @click="addPurchase()" icon="el-icon-circle-plus-outline" round>新增活动</el-button></el-col>
 			<div class="serach">
@@ -281,15 +281,15 @@ export default {
 </script>
 
 <style type="text/css">
-#app {
+#app1 {
 	font-family: Helvetica, sans-serif;
 	text-align: center;
 }
-#app .el-button {
+#app1 .el-button {
 	display: block;
 	padding: 10px;
 }
-#app .serach {
+#app1 .serach {
 	text-align: right;
 }
 </style>

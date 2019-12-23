@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="ahao">
 		<el-row>
 			<el-col :span="1" class="grid"><el-button type="success" @click="addPurchase()" icon="el-icon-circle-plus-outline" round>新增团购</el-button></el-col>
 			<div class="serach">
@@ -179,33 +179,71 @@ export default {
 				console.log(e);
 			}
 		},
+		checks() {
+			var obj = this;
+			if (obj.Purchase.activityName == null) {
+				obj.$alert('活动名称不能为空！');
+				return false;
+			}
+			if ( obj.Purchase.activityNumber <= 1 ) {
+				obj.$alert('拼团人数必须大于等于2！');
+				return false;
+			}
+			if ( obj.Purchase.validHours % 24 != 0 && obj.Purchase.validHours < 24 ) {
+				obj.$alert('成团时间不能小于24小时且必须是24的倍数');
+				return false;
+			}
+			if ( obj.Purchase.startTime == null && obj.Purchase.endTime == null ) {
+				obj.$alert('结束日期开始日期不能为空');
+				var arr1 = obj.Purchase.startTime.split('-');
+				var arr2 = obj.Purchase.endTime.split('-');
+				var date1 = new Date(parseInt(arr1[0]), parseInt(arr1[1]) - 1, parseInt(arr1[2]), 0, 0, 0);
+				var date2 = new Date(parseInt(arr2[0]), parseInt(arr2[1]) - 1, parseInt(arr2[2]), 0, 0, 0);
+				if (date1.getTime() > date2.getTime()) {
+					obj.$alert('结束日期不能小于开始日期');
+					return false;
+				}
+			}
+			if ( obj.Purchase.activitySameTime <= 0 ) {
+				obj.$alert('用户同时参团数必须大于0！');
+				return false;
+			}
+			if ( obj.Purchase.limitedQuantity <= 0 ) {
+				obj.$alert('用户限购数量必须大于0！');
+				return false;
+			}
+			return true;
+		},
 		async savePurchase() {
-			try {
-				let res = await axios.post(
-					'/Purchase/save',
-					qs.stringify({
-						activitiesId: this.Purchase.activitiesId,
-						activityName: this.Purchase.activityName,
-						activityNumber: this.Purchase.activityNumber,
-						activitySameTime: this.Purchase.activitySameTime,
-						validHours: this.Purchase.validHours,
-						limitedQuantity: this.Purchase.limitedQuantity,
-						startTime: this.Purchase.startTime,
-						endTime: this.Purchase.endTime,
-						storeId: this.value.join(),
-						parameters: this.Purchase.parameters,
-						remarks: this.Purchase.remarks
-					})
-				);
-				this.dialogVisible = false;
-				this.Purchase = {};
-				this.$message({
-					message: res.data.Msg,
-					type: 'success'
-				});
-				this.getPurchaseList();
-			} catch (e) {
-				console.log(e);
+			var flag = this.checks();
+			if (flag) {
+				try {
+					let res = await axios.post(
+						'/Purchase/save',
+						qs.stringify({
+							activitiesId: this.Purchase.activitiesId,
+							activityName: this.Purchase.activityName,
+							activityNumber: this.Purchase.activityNumber,
+							activitySameTime: this.Purchase.activitySameTime,
+							validHours: this.Purchase.validHours,
+							limitedQuantity: this.Purchase.limitedQuantity,
+							startTime: this.Purchase.startTime,
+							endTime: this.Purchase.endTime,
+							storeId: this.value.join(),
+							parameters: this.Purchase.parameters,
+							remarks: this.Purchase.remarks
+						})
+					);
+					this.dialogVisible = false;
+					this.Purchase = {};
+					this.$message({
+						message: res.data.Msg,
+						type: 'success'
+					});
+					this.getPurchaseList();
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		},
 		delPurchase(row) {
@@ -244,7 +282,12 @@ export default {
 			this.addFlag = false;
 		},
 		addPurchase() {
-			this.Purchase = {};
+			this.Purchase = {
+				activitySameTime:0,
+				activityNumber:0,
+				validHours:24,
+				limitedQuantity:0,
+			};
 			this.value = [];
 			this.dialogVisible = true;
 			this.addFlag = true;
@@ -275,15 +318,15 @@ export default {
 </script>
 
 <style type="text/css">
-#app {
+#ahao {
 	font-family: Helvetica, sans-serif;
 	text-align: center;
 }
-#app .el-button {
+#ahao .el-button {
 	display: block;
 	padding: 10px;
 }
-#app .serach {
+#ahao .serach {
 	text-align: right;
 }
 </style>

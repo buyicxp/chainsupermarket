@@ -126,27 +126,46 @@ export default {
 				console.log(e);
 			}
 		},
+		checks() {
+			var obj = this;
+			if (obj.advType.advertisingName == null) {
+				obj.$alert('类型名称不能为空！');
+				return false;
+			}
+			if (obj.value == 0) {
+				obj.$alert('请选择广告分类');
+				return false;
+			}
+			if (obj.AdVerTiList.commodityId == null) {
+				obj.$alert('请输入商品id');
+				return false;
+			}
+			return true;
+		},
 		async saveadvType() {
-			try {
-				let res = await axios.post(
-					'/adver/addAdvertisingTypeVO',
-					qs.stringify({
-						advertisingId: this.advType.advertisingId,
-						advertisingName: this.advType.advertisingName,
-						usable: this.radio,
-						orderByBy: this.advType.orderByBy,
-						advertContent: this.advType.advertContent
-					})
-				);
-				this.dialogVisible = false;
-				this.advType = {};
-				this.$message({
-					message: res.data.Msg,
-					type: 'success'
-				});
-				this.getadvTypeList();
-			} catch (e) {
-				console.log(e);
+			var flag = this.checks();
+			if (flag) {
+				try {
+					let res = await axios.post(
+						'/adver/addAdvertisingTypeVO',
+						qs.stringify({
+							advertisingId: this.advType.advertisingId,
+							advertisingName: this.advType.advertisingName,
+							usable: this.radio,
+							orderByBy: this.advType.orderByBy,
+							advertContent: this.advType.advertContent
+						})
+					);
+					this.dialogVisible = false;
+					this.advType = {};
+					this.$message({
+						message: res.data.Msg,
+						type: 'success'
+					});
+					this.getadvTypeList();
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		},
 		deladvType(row) {
@@ -179,7 +198,7 @@ export default {
 			this.addFlag = false;
 		},
 		addadvType() {
-			this.advType = {};
+			this.advType = {orderByBy:0};
 			this.dialogVisible = true;
 			this.addFlag = true;
 		}

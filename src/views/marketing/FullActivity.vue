@@ -16,7 +16,7 @@
 			   </el-row>
 			<!-- 根据活动名称查询数据（支持模糊查询） -->
 			<div class="serach"><el-input placeholder="请输入搜索的词" v-model="fullActivity.activityName" clearable style="width: 10.625rem;" @clear="getActivityList()"></el-input>
-			<el-button type="success" @click="getActivityList()">搜索</el-button>
+			<el-button type="success" @click="getActivityList()" >搜索</el-button>
 			</div>
 			<!-- 满减满赠活动列表 -->
 			<el-table :data="fullActivityList">
@@ -218,5 +218,9 @@ export default {
 }
 .serach{
 	text-align: right;
+}
+.el-button {
+	display: inline-block;
+	padding: 10px;
 }
 </style>

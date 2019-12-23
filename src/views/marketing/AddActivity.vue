@@ -22,8 +22,8 @@
 			</el-form-item>
 
 			<el-form-item>
-				<el-button type="primary" @click="add()" @keyup.enter.native="add()">添加</el-button>
-				<el-button>取消</el-button>
+				<el-button type="primary" @click="add()" @keyup.enter.native="add()" style="display: inline-block;">添加</el-button>
+				<el-button style="display: inline-block;">取消</el-button>
 			</el-form-item>
 		</el-form>
 	</div>

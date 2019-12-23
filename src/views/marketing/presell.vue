@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<el-row>
-			<el-col :span="1" class="grid"><el-button type="success" @click="addPurchase()" icon="el-icon-circle-plus-outline" round>新增团购</el-button></el-col>
+			<el-col :span="1" class="grid"><el-button type="success" @click="addPurchase()" icon="el-icon-circle-plus-outline" round>新增活动</el-button></el-col>
 			<div class="serach">
 				<el-input placeholder="请输入搜索的词" v-model="Purchase.advanceNames" clearable style="width: 10.625rem;" @clear="getPurchaseList()"></el-input>
 				<el-button type="success" @click="getPurchaseList" style="display: inline-block;">搜索</el-button>

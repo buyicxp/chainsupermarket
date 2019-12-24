@@ -89,6 +89,69 @@ const routes = [{
 				path: '/addGoods',
 				name: 'addGoods',
 				component: () => import('../views/commodity/addGoods.vue')
+			},{
+				path:'/product',
+				name:'product',
+				component:()=>import('@/components/product.vue')
+			},
+			{
+				path: "/StaffList",
+				name: "StaffList",
+				component: () => import('@/components/StaffList.vue')
+			}
+			,
+			{
+				path: "/producter",
+				name: "producter",
+				component: () => import('@/components/producter.vue')
+			}
+			,
+			{
+				path: "/member",
+				name: "member",
+				component: () => import('@/components/member.vue')
+			}
+			,
+			{
+				path: "/comments",
+				name: "comments",
+				component: () => import('@/components/comments.vue')
+			}
+			,
+			{
+				path: "/Article",
+				name: "Article",
+				component: () => import('@/components/Article.vue')
+			}
+			,
+			{
+				path: "/ArticleType",
+				name: "ArticleType",
+				component: () => import('@/components/ArticleType.vue')
+			}
+			,
+			{
+				path: "/SaveArticle",
+				name: "SaveArticle",
+				component: () => import('@/components/SaveArticle.vue')
+			}
+			,
+			{
+				path: "/freight",
+				name: "freight",
+				component: () => import('@/components/freight.vue')
+			}
+			,
+			{
+				path: "/SaveArticleType",
+				name: "SaveArticleType",
+				component: () => import('@/components/SaveArticleType.vue')
+			}
+			,
+			{
+				path: "/ShopMessage",
+				name: "ShopMessage",
+				component: () => import('@/components/ShopMessage.vue')
 			}
 		]
 	},

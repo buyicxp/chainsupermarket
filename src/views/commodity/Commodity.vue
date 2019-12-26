@@ -135,7 +135,7 @@
             return {
                 list: [],
                 total: 0,
-                pageSize: 1,
+                pageSize: 5,
                 currentPage: 1,
                 iconFormVisible: false,
                 commodity: {},

@@ -71,6 +71,7 @@
 							:file-list="fileList"
 						>
 							<el-button size="small" type="primary">点击上传</el-button>
+							<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 						</el-upload>
 					</el-col>
 					<el-col :span="8">
@@ -93,6 +94,7 @@
 						<el-form-item label="请选择分类:">
 							<template>
 								<el-select v-model="value" placeholder="广告分类">
+									<el-option label="全部" value="0"></el-option>
 									<el-option v-for="item in TypeList" :key="item.advertisingId" :label="item.advertisingName" :value="item.advertisingId"></el-option>
 								</el-select>
 							</template>
@@ -103,11 +105,11 @@
 					<el-col :span="8">
 						<el-form-item label="广告排序:"><el-input v-model="AdVerTiList.orderByBy" style="width:80px"></el-input></el-form-item>
 					</el-col>
-					<el-col :span="8">
-						<el-form-item label="广告商品编号:"><el-input v-model="AdVerTiList.commodityId" style="width:138px"></el-input></el-form-item>
+					<el-col :span="15">
+						<el-form-item label="选择广告商品:"><el-cascader v-model="values" :options="options" @change="handleChange"></el-cascader></el-form-item>
 					</el-col>
 				</el-row>
-				<el-form-item label="说明:"><el-input v-model="AdVerTiList.advertContent" type="textarea" :rows="4"></el-input></el-form-item>
+				<el-form-item label="内容:"><el-input v-model="AdVerTiList.advertContent" type="textarea" :rows="4"></el-input></el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="success" @click="saveAdVerTiList()" style="display: inline-block;">保存</el-button>
@@ -147,7 +149,14 @@ export default {
 			imageUrl: '',
 			file: '',
 			fileList: [],
-			typename: []
+			typename: [],
+			values: [],
+			options: [
+				{
+					value: '1',
+					label: '全场'
+				}
+			]
 		};
 	},
 	watch: {
@@ -158,7 +167,21 @@ export default {
 			}
 		}
 	},
+	created() {
+		this.getAllGoods();
+	},
 	methods: {
+		//级联转换器中显示范围，商品分类，商品
+		getAllGoods() {
+			var that = this;
+			var url = 'http://localhost:8080/goodschild/findGT';
+			// console.log(url)
+			this.$axios.post(url).then(res => {
+				// console.log(res.data);
+				that.options.push({ value: '2', label: '部分商品', children: res.data });
+				that.options.push({ value: '3', label: '指定商品', children: res.data });
+			});
+		},
 		handlePreview(file) {
 			console.log(file);
 		},
@@ -228,8 +251,12 @@ export default {
 				obj.$alert('请选择广告分类');
 				return false;
 			}
-			if (obj.AdVerTiList.commodityId == null) {
-				obj.$alert('请输入商品id');
+			if (obj.AdVerTiList.orderByBy == 0 && obj.AdVerTiList.orderByBy == '') {
+				obj.$alert('请输入广告排序');
+				return false;
+			}
+			if (obj.values[2] == null) {
+				obj.$alert('请选择广告商品');
 				return false;
 			}
 			return true;
@@ -248,7 +275,7 @@ export default {
 							usable: this.radio,
 							orderByBy: this.AdVerTiList.orderByBy,
 							advertisingTypeId: this.value,
-							commodityId: this.AdVerTiList.commodityId,
+							commodityId: this.values[2],
 							advertContent: this.AdVerTiList.advertContent
 						})
 					);
@@ -277,6 +304,7 @@ export default {
 						adVerTiListId: this.curId
 					})
 				);
+				this.value = [];
 				this.curId = '';
 				this.dialog2Visible = false;
 				this.$message({
@@ -292,6 +320,8 @@ export default {
 			this.AdVerTiList = row;
 			this.dialogVisible = true;
 			this.addFlag = false;
+			this.imageUrl = this.AdVerTiList.adVerTiImage;
+			this.fileList = [];
 		},
 		addAdVerTiList() {
 			(this.imageUrl = ''), (this.fileList = []), (this.AdVerTiList = { orderByBy: 0 });

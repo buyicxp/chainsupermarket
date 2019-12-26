@@ -165,6 +165,12 @@ export default {
 		},
 		async getPurchaseList() {
 			try {
+
+				/*修改部分*/
+				if(this.Purchase.activityNamei!=null && this.Purchase.activityNamei.trim()!=''){
+					this.page=1;
+				}
+
 				let res = await axios.post(
 					'/Purchase/list',
 					qs.stringify({

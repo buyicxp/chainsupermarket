@@ -217,6 +217,9 @@ export default {
 		},
 		async getAdVerTiList() {
 			try {
+				if(this.AdVerTiList.adVerTiNamei!=null && this.AdVerTiList.adVerTiNamei.trim()!=''){
+					this.page=1
+				}
 				let res = await axios.post(
 					'/adVer/getAdVerTiList',
 					qs.stringify({

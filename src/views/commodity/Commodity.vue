@@ -38,7 +38,10 @@
                       @selection-change="selectionchange">
                 <el-table-column type="selection" width="55" fixed>
                 </el-table-column>
-                <el-table-column prop="id" label="产品ID" width="150" fixed>
+                <el-table-column label="序号ID" type="index" width="80px" align="center">
+                    <template slot-scope="scope">
+                        <span>{{ (currentPage - 1) * pageSize + scope.$index + 1 }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="picturepath" label="图标" width="150">
                     <template slot-scope="scope">
@@ -132,7 +135,7 @@
             return {
                 list: [],
                 total: 0,
-                pageSize: 3,
+                pageSize: 1,
                 currentPage: 1,
                 iconFormVisible: false,
                 commodity: {},
@@ -162,7 +165,7 @@
             },
             showTable(currentPage, pageSize) {
                 // this.listLoading = true;
-                this.$axios.post('/commodity/pageCommodity',
+                this.$axios.post('/comm/pageCommodity',
                     this.qs.stringify({
                         start: this.currentPage,
                         pageSize: this.pageSize
@@ -176,20 +179,20 @@
                 })
             },
             count() {
-                this.$axios.post('/commodity/count').then(result => {
+                this.$axios.post('/comm/count').then(result => {
                     this.total = result.data;
                 }).catch((error) => {
                     alert(error)
                 })
             },
             delCommodity(index, row) {
-                this.$confirm(`确定删除${row.goodsTitle}吗?`, '提示', {
+                this.$confirm(`确定删除${row.goodsName}吗?`, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'error',
                 }).then(() => {
                     this.list.splice(index, 1); //删除当前list对象
-                    this.$axios.post('/commodity/delCommodity', this.qs.stringify({"id": row.id})).then(result => {
+                    this.$axios.post('/comm/delCommodity', this.qs.stringify({"id": row.id})).then(result => {
                         if (result.data === true) {
                             alert("删除成功");
                             this.showTable(this.currentPage, this.pageSize);
@@ -202,7 +205,7 @@
             },
             downCom(index, row) {
                 if (row.upperDown === 0) {
-                    this.$axios.post('/commodity/underCarriage', this.qs.stringify({"id": row.id})).then(result => {
+                    this.$axios.post('/comm/underCarriage', this.qs.stringify({"id": row.id})).then(result => {
                         if (result.data === true) {
                             alert("下架成功");
                             this.showTable(this.currentPage, this.pageSize);
@@ -212,7 +215,7 @@
                         }
                     })
                 } else {
-                    this.$axios.post('/commodity/grounding', this.qs.stringify({"id": row.id})).then(result => {
+                    this.$axios.post('/comm/grounding', this.qs.stringify({"id": row.id})).then(result => {
                         if (result.data === true) {
                             alert("上架成功");
                             this.showTable(this.currentPage, this.pageSize);
@@ -224,7 +227,10 @@
                 }
             },
             selectCommodity() {
-                this.$axios.post('/commodity/listCommodity',
+                if(this.commodity.goodsName!=null && this.commodity.goodsName.trim()!=''){
+                     this.currentPage=1;
+                }
+                this.$axios.post('/comm/listCommodity',
                     this.qs.stringify({
                         start: this.currentPage,
                         pageSize: this.pageSize,
@@ -252,7 +258,7 @@
                         cancelButtonText: '取消'
                     }).then(() => {
                         let idList = this.isList.toString();
-                        this.$axios.post('/commodity/dele',
+                        this.$axios.post('/comm/dele',
                             this.qs.stringify({isList: idList})).then(result => {
                             if (result.data === true) {
                                 /* alert('删除成功')

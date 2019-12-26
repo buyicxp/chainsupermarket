@@ -164,6 +164,13 @@ export default {
 		//分页查询的方法
 		async getPurchaseList() {
 			try {
+
+				/*修改部分*/
+				if(this.Purchase.activityNamei!=null && this.Purchase.activityNamei.trim()!=''){
+					this.page=1;
+				}
+
+
 				let res = await axios.post(
 					'/marketings/selectMarket',
 					qs.stringify({

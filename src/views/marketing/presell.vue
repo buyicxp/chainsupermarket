@@ -177,6 +177,13 @@ export default {
 		},
 		async getPurchaseList() {
 			try {
+
+				/*修改部分*/
+				if(this.Purchase.advanceNames!=null && this.Purchase.advanceNames.trim()!=''){
+					this.page=1;
+				}
+
+
 				let res = await axios.post(
 					'/marketing/pageBrand',
 					qs.stringify({
@@ -185,7 +192,7 @@ export default {
 						advanceName: this.Purchase.advanceNames
 					})
 				);
-				this.total = res.data.total;
+				this.total = res.data.totol;
 				this.PurchaseList = res.data.message;
 			} catch (e) {
 				console.log(e);

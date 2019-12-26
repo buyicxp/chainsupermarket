@@ -123,6 +123,13 @@ export default {
 		//获取活动数据(模糊查询)
 		async getActivityList() {
 			try {
+				/*修改部分*/
+				if(this.fullActivity.activityName!=null && this.fullActivity.activityName.trim()!=''){
+					this.page=1;
+				}
+
+
+
 				let res = await axios.post(
 					'http://localhost:8080/fullActivity/list',
 					qs.stringify({
